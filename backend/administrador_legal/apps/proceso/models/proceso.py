@@ -2,13 +2,16 @@ from django.db import models
 from apps.abogado.models import Abogado
 from apps.abogado.models import Persona
 from apps.abogado.models import Empresa
+from django.contrib.auth.models import User
+from apps.despacho.models import Despacho
 
 
 class Proceso(models.Model):
-    PROCESOS_CHOICES =  (('JURIDICO', 'juridico'),('OTRO', 'otro')) 
+    PROCESOS_CHOICES =  (('JURIDICO', 'juridico'), ('EJECUTIVO', 'ejecutivo'),('OTRO', 'otro')) 
     LITISCONSORCIO = (('NECESARIO', 'necesario'), ('FACULTATIVO', 'facultativo'), ('CUASI-NECESARIO', 'cuasi-necesario'), ('NO-APLICA', 'no aplica')) 
     radicado = models.FloatField( primary_key=True)
-    abogado = models.ForeignKey(Abogado, on_delete=models.CASCADE, blank=False, null=True)
+    despacho = models.ForeignKey(Despacho, on_delete=models.CASCADE, blank=False, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True)
     tipo = models.CharField(max_length = 30, null = False, choices = PROCESOS_CHOICES, default = 'JURIDICO', blank = False)
     estado = models.CharField(max_length = 30, null = False, blank = False)
     litisconsorcio = models.CharField(max_length = 30, null = False, choices = LITISCONSORCIO, default = 'NO-APLICA', blank = False)
