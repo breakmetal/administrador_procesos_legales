@@ -3,26 +3,51 @@ from rest_framework import viewsets
 from ..serializers import ProcesoSerializer
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 class ProcesoViewSet(viewsets.ModelViewSet):
     queryset = Proceso.objects.all()
     serializer_class = ProcesoSerializer
+    
 
     def get_queryset(self):
         user = self.request.user.id
-        return Proceso.objects.filter(user = user)
+        procesos = Proceso.objects.filter(user = user)
+        return procesos
 
         
     def list(self, request):
         queryset = self.get_queryset() 
-        serializer = ProcesoSerializer(queryset, many = True)
-        return Response(serializer.data)
+        page = self.paginate_queryset(queryset)
+        serializer_context = {'request': request}
+        serializer = self.serializer_class(
+            page, context=serializer_context, many=True
+        )
+        return self.get_paginated_response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        instance = request.data
+        serializer = ProcesoSerializer(
+                data=request.data,
+                context={'request': request}
+            )
+        serializer.is_valid(raise_exception=True)
+        proceso = serializer.save()
+        assign_perm("asignar_permisos", request.user, proceso)
+        assign_perm("ver", request.user, proceso)
+        assign_perm("agregar", request.user, proceso)
+        assign_perm("modificar", request.user, proceso)
+        assign_perm("eliminar", request.user, proceso)
+        return Response({"mensaje": "el proceso fue creado"})
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         user = self.request.user.id
-        if user == instance.user_id:
+        check_permission = user.has_perm('modificar',instance)
+        if  check_permission:
             serializer = ProcesoSerializer(
                 instance=instance,
                 data=request.data,
@@ -35,11 +60,11 @@ class ProcesoViewSet(viewsets.ModelViewSet):
             return Response("tu no tienes permiso")
 
     def destroy(self, request, pk=None):
-        instance = self.get_object()
         try:
-            instance = self.get_object()
-            user = self.request.user.id
-            if user == instance.user_id:
+            instance = Proceso.objects.get(radicado=pk)
+            user = self.request.user
+            check_permission = user.has_perm('eliminar',instance)
+            if check_permission:
                 instance.delete()
                 return Response('el proceso fue eliminado')
             else:
@@ -48,3 +73,31 @@ class ProcesoViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         
         return Response('hola2')
+
+    def retrieve(self, request, pk=None):
+        queryset = self.get_queryset()
+        proceso= get_object_or_404(queryset, pk=pk)
+        serializer = ProcesoSerializer(proceso)
+        return Response(serializer.data)
+ 
+    def obtener_procesos_compartidos(self):
+        user = self.request.user
+        procesos = get_objects_for_user(user, 'ver', klass=Proceso)
+        return procesos
+    
+    @action(detail=False, methods=['get'])
+    def listar_procesos_compartidos(self, request):
+        queryset = self.obtener_procesos_compartidos()
+        page = self.paginate_queryset(queryset)
+        serializer_context = {'request': request}
+        serializer = self.serializer_class(
+            page, context=serializer_context, many=True
+        )
+        return self.get_paginated_response(serializer.data)
+    
+    @action(detail=True, methods=['get'])
+    def obtener_proceso(self, request, pk=None):
+        queryset = self.obtener_procesos_compartidos()
+        proceso= get_object_or_404(queryset, pk=pk)
+        serializer = ProcesoSerializer(proceso)
+        return Response(serializer.data)

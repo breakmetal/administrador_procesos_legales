@@ -9,11 +9,6 @@ class JuezSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DespachoSerializer(serializers.ModelSerializer):
-    juez= serializers.HyperlinkedRelatedField(
-        many=False,
-        read_only=True,
-        view_name='juez-detail',
-    )
     class Meta:
         model = Despacho
         fields = [

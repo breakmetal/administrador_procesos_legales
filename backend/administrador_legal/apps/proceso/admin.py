@@ -4,6 +4,8 @@ from .models import Archivo
 from .models import Cautelar
 from .models import Ejecutivo
 from .models import Notificacion
+from .models import PersonasNotificadas
+from .models import EmpresasNotificadas
 from .models import Proceso
 from .models import Partesj
 from .models import Partesn

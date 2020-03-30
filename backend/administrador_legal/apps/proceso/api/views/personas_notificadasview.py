@@ -1,40 +1,31 @@
-from ...models import Ejecutivo, Proceso
+from ...models import PersonasNotificadas, Notificacion
 from rest_framework import viewsets
-from ..serializers import EjecutivoSerializer
+from ..serializers import PersonasNotificadasSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
+class PersonasNotificadasView(viewsets.ModelViewSet):
+    queryset = PersonasNotificadas.objects.all()
+    serializer_class = PersonasNotificadasSerializer
 
-class EjecutivoViewSet(viewsets.ModelViewSet):
-    queryset = Ejecutivo.objects.all()
-    serializer_class = EjecutivoSerializer
 
-    def list(self, request):
-        pass
 
     def create(self, request, *args, **kwargs):
         instance = request.data
-        serializer = EjecutivoSerializer(
-                data=request.data,
-                context={'request': request}
-            )
+        serializer = PersonasNotificadasSerializer(data=instance)
         serializer.is_valid(raise_exception=True)
-        ejecutivo = serializer.save()
-        assign_perm("asignar_permisos", request.user, ejecutivo)
-        assign_perm("ver", request.user, ejecutivo)
-        assign_perm("agregar", request.user, ejecutivo)
-        assign_perm("modificar", request.user, ejecutivo)
-        assign_perm("eliminar", request.user, ejecutivo)
-        return Response({"mensaje": "el registro fue agregado"})
-        
+        notificado = serializer.save()
+        return Response({"mensaje": "se agrego una persona"})
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        notificacion = Notificacion.objects.get(pk=instance.notificacion.id)
         user = self.request.user
-        check_permission = user.has_perm('modificar',instance)
+        check_permission = user.has_perm('modificar',notificacion)
         if  check_permission:
-            serializer = EjecutivoSerializer(
+            serializer = PersonasNotificadasSerializer(
                 instance=instance,
                 data=request.data,
                 context={'request': request}
@@ -47,26 +38,27 @@ class EjecutivoViewSet(viewsets.ModelViewSet):
         return Response(request)
 
     def retrieve(self, request, pk=None):
-        ejecutivo = Ejecutivo.objects.get(pk=pk)
+        queryset = PersonasNotificadas.objects.get(id=pk)
+        notificacion = Notificacion.objects.get(pk=queryset.notificacion.id)
         user = self.request.user
-        check_permission = user.has_perm('ver',ejecutivo)
+        check_permission = user.has_perm('ver',notificacion)
         if  check_permission:
-            serializer = EjecutivoSerializer(ejecutivo)
+            serializer = PersonasNotificadasSerializer(queryset)
             return Response(serializer.data)
         else:
             return Response({"mensaje": "tu no tienes permiso para ver el registro"})
-            
     
     def destroy(self, request, pk=None):
         try:
-            instance = Ejecutivo.objects.get(id)
+            instance = self.get_object()
+            notificacion = Notificacion.objects.get(pk=instance.notificacion.id)
             user = self.request.user
-            check_permission = user.has_perm('eliminar',instance)
+            check_permission = user.has_perm('modificar',notificacion)
             if  check_permission:
                 instance.delete()
                 return Response('el registro fue eliminado')
             else:
-                return Response('tu no tienes permiso para eliminar el registro')
+                return Response({'mensaje':'tu no tienes permiso para eliminar el registro'})
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
         

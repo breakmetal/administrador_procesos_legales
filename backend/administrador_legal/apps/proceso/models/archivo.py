@@ -13,3 +13,12 @@ class Archivo(models.Model):
     extencion = models.CharField(max_length = 10, null = False,  blank = False)
     ruta = models.CharField(max_length = 50, null = False,  blank = False)
     descripcion = models.CharField(max_length = 100, null = False,  blank = False)
+
+    class Meta:
+        permissions = (
+            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
+            ('ver', 'ver'),
+            ('agregar', 'agregar'),
+            ('modificar', 'modificar'),
+            ('eliminar', 'eliminar'),
+        )

@@ -21,33 +21,42 @@ class Proceso(models.Model):
     fecha_finalizacion = models.DateTimeField( null = False )
 
     class Meta:
-        default_permissions = ('add', 'change', 'delete')
         permissions = (
             ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver_proceso', 'ver todo del proceso'),
-            ('agregar_archivos', 'agregar archivos'),
-            ('modificar_archivos', 'modificar archivos'),
-            ('eliminar_archivos', 'eliminar archivos'),
-            ('agregar_notificacion', 'agregar notificacion'),
-            ('modificar_notificacion', 'modificar notificacion'),
-            ('eliminar_notificacion', 'eliminar notificacion'),
-            ('agregar_actuacion', 'agregar actuacion'),
-            ('modificar_actuacion', 'modificar actuacion'),
-            ('eliminar_actuacion', 'eliminar actuacion'),
-            ('agregar_cautela', 'agregar cautela'),
-            ('modificar_cautela', 'modificar cautela'),
-            ('eliminar_cautela', 'eliminar cautela'),
+            ('ver', 'ver'),
+            ('agregar', 'agregar'),
+            ('modificar', 'modificar'),
+            ('eliminar', 'eliminar'),
         )
 
 
 class Partesn(models.Model):
     ROLES = (('DEMANDADO', 'demandado'), ('DEMANDANTE', 'demandante'), ('PERITO', 'perito'), ('TERCERO', 'tercero'))
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    Proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE)
+    Proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, related_name='partesNaturales')
     rol =  models.CharField(max_length = 15, null = False, choices = ROLES, default = 'DEMANDANTE', blank = False)
+
+    class Meta:
+        permissions = (
+            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
+            ('ver', 'ver'),
+            ('agregar', 'agregar'),
+            ('modificar', 'modificar'),
+            ('eliminar', 'eliminar'),
+        )
+
 
 class  Partesj(models.Model):
     ROLES = (('DEMANDADO', 'demandado'), ('DEMANDANTE', 'demandante'))
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    Proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE)
+    Proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, related_name='partesJuridicas')
     rol =  models.CharField(max_length = 15, null = False, choices = ROLES, default = 'DEMANDANTE', blank = False)
+
+    class Meta:
+        permissions = (
+            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
+            ('ver', 'ver'),
+            ('agregar', 'agregar'),
+            ('modificar', 'modificar'),
+            ('eliminar', 'eliminar'),
+        )

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from ..models import *
 
 class AbogadoSerializer(serializers.ModelSerializer):
+    
     class Meta: 
         model = Abogado
         fields = ('documento', 'telefono', 'especialidad', 'nacimiento')
@@ -24,11 +25,13 @@ class UserSerializer(serializers.ModelSerializer):
         return user 
 
 class EmpresaSerializer(serializers.ModelSerializer):
+    abogado = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Empresa
-        fields = ('abogado','documento', 'nombre', 'actividad', 'contact_info')
+        fields = '__all__'
 
 class PersonaSerializer(serializers.ModelSerializer):
+    abogado = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Persona
-        fields = ('abogado''documento', 'nombre', 'actividad', 'contact_info')
+        fields = '__all__'
