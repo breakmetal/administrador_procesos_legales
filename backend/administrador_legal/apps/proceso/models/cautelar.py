@@ -11,11 +11,3 @@ class Cautelar(models.Model):
     estado =  models.CharField(max_length = 15, null = False, choices = ESTADOS, default = 'ORDENACION', blank = False)
     secuestro_info = JSONField()
 
-    class Meta:
-        permissions = (
-            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver', 'ver'),
-            ('agregar', 'agregar'),
-            ('modificar', 'modificar'),
-            ('eliminar', 'eliminar'),
-        )

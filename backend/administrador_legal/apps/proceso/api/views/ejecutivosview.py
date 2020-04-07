@@ -1,6 +1,6 @@
 from ...models import Ejecutivo, Proceso
 from rest_framework import viewsets
-from ..serializers import EjecutivoSerializer
+from ..serializers import EjecutivoSerializer, ProcesoSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -16,23 +16,25 @@ class EjecutivoViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         instance = request.data
-        serializer = EjecutivoSerializer(
+        proceso = Proceso.objects.get(id = instance['proceso'])
+        user = request.user.id
+        if proceso.user.id == user:
+            serializer = self.get_serializer(
                 data=request.data,
                 context={'request': request}
             )
-        serializer.is_valid(raise_exception=True)
-        ejecutivo = serializer.save()
-        assign_perm("asignar_permisos", request.user, ejecutivo)
-        assign_perm("ver", request.user, ejecutivo)
-        assign_perm("agregar", request.user, ejecutivo)
-        assign_perm("modificar", request.user, ejecutivo)
-        assign_perm("eliminar", request.user, ejecutivo)
-        return Response({"mensaje": "el registro fue agregado"})
+            serializer.is_valid(raise_exception=True)
+            ejecutivo = serializer.save()
+            return Response({"mensaje": "el registro fue agregado"})
+        else:
+            return Response({"mensaje": "no puedes hacer eso"})
         
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
+        
+    def update(self, request, pk = None):
+        instance = Ejecutivo.objects.get(id = pk)
         user = self.request.user
-        check_permission = user.has_perm('modificar',instance)
+        proceso = Proceso.objects.get(id = instance.proceso.id)
+        check_permission = user.has_perm('modificar',proceso)
         if  check_permission:
             serializer = EjecutivoSerializer(
                 instance=instance,
@@ -43,13 +45,13 @@ class EjecutivoViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         else:
-            return Response({"mensaje":"tu no tienes permiso"})
-        return Response(request)
+            return Response({"mensaje": "tu no tienes permiso"})
 
     def retrieve(self, request, pk=None):
-        ejecutivo = Ejecutivo.objects.get(pk=pk)
+        ejecutivo = Ejecutivo.objects.get(proceso = pk)
         user = self.request.user
-        check_permission = user.has_perm('ver',ejecutivo)
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
         if  check_permission:
             serializer = EjecutivoSerializer(ejecutivo)
             return Response(serializer.data)

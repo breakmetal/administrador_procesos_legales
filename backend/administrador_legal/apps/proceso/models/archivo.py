@@ -1,24 +1,20 @@
 from django.db import models
 from .proceso import Proceso
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
+
+
+def proyect_directory_path(instance, filename):
+        return 'archivos_proceso/{0}/{1}'.format(instance.proceso.id, filename)
 
 class Archivo(models.Model):
-    TIPOS = (
-        ('IMAGENES', 'imagenes'),
-        ('PDF', 'pdf'),
-        ('WORD', 'word'),
-    )
     proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, blank=False, null=True)
-    tipo = models.CharField(max_length = 15, null = False, choices = TIPOS, default = TIPOS, blank = False)
-    documento =  models.CharField(max_length = 30, null = False,  blank = False)
-    extencion = models.CharField(max_length = 10, null = False,  blank = False)
-    ruta = models.CharField(max_length = 50, null = False,  blank = False)
+    archivo =  models.FileField(upload_to = proyect_directory_path, null=True) 
+    extension = models.CharField(max_length = 10, null = False,  blank = False)
     descripcion = models.CharField(max_length = 100, null = False,  blank = False)
 
-    class Meta:
-        permissions = (
-            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver', 'ver'),
-            ('agregar', 'agregar'),
-            ('modificar', 'modificar'),
-            ('eliminar', 'eliminar'),
-        )
+
+@receiver(post_delete, sender = Archivo)
+def eliminar_archivo(sender, instance, **kwargs):
+    os.remove(instance.archivo.path)

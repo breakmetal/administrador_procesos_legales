@@ -10,67 +10,65 @@ class ParteNViewSet(viewsets.ModelViewSet):
     queryset = Partesn.objects.all()
     serializer_class = PartesNSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        partes_naturales = get_objects_for_user(user, 'ver', klass=Partesn)
-        return partes_naturales
-
     def create(self, request, *args, **kwargs):
         instance = request.data
-        serializer = PartesNSerializer(data=instance)
-        serializer.is_valid(raise_exception=True)
-        parte = serializer.save()
-        assign_perm("asignar_permisos", request.user, parte)
-        assign_perm("ver", request.user, parte)
-        assign_perm("agregar", request.user, parte)
-        assign_perm("modificar", request.user, parte)
-        assign_perm("eliminar", request.user, parte)
-        return Response({"mensaje": "se agrego una persona"})
-
+        user = self.request.user
+        proceso = Proceso.objects.get(id = instance["proceso"])
+        if proceso.user.id == request.user.id:
+            serializer = PartesNSerializer(data=instance)
+            serializer.is_valid(raise_exception=True)
+            parte = serializer.save()
+            return Response({"mensaje": "el registro fue agregado"})
+        else:
+            return Response({"mensaje": "tu no tienes permiso"})
+        
     def list(self, request):
-        queryset = self.get_queryset() 
-        page = self.paginate_queryset(queryset)
-        serializer_context = {'request': request}
-        serializer = self.serializer_class(
-            page, context=serializer_context, many=True
-        )
-        return self.get_paginated_response(serializer.data)
+        pass
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
+       pass
+
+    def partial_update(self, request, pk=None):
+        instance = Partesn.objects.get(id = pk)
         user = self.request.user
-        check_permission = user.has_perm('modificar',instance)
+        proceso = Proceso.objects.get(id = instance.proceso.id)
+        check_permission = user.has_perm('modificar',proceso)
         if  check_permission:
-            serializer = PartesNSerializer(
+            serializer = self.get_serializer(
                 instance=instance,
                 data=request.data,
-                context={'request': request}
+                context={'request': request},
+                partial=True
             )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
         else:
             return Response({"mensaje":"tu no tienes permiso"})
-        return Response(request)
 
     def retrieve(self, request, pk=None):
-        queryset = self.get_queryset()
-        parte = get_object_or_404(queryset, pk=pk)
-        serializer = PartesNSerializer(parte)
-        return Response(serializer.data)
-            
+        queryset = Partesn.objects.get(id = pk)
+        proceso = Proceso.objects.get(id = queryset.proceso.id)
+        user = self.request.user
+        check_permission =  user.has_perm('ver', proceso)
+        if check_permission:
+            serializer = PartesNSerializer(queryset)
+            return Response(serializer.data)
+        else:
+            return Response({"mensaje":"tu no tienes permiso"})
+        
     
     def destroy(self, request, pk=None):
-        instance = self.get_object()
         try:
-            instance = self.get_object()
+            queryset = Partesn.objects.get(id = pk)
+            proceso = Proceso.objects.get(id = queryset.proceso.id)
             user = self.request.user
-            check_permission = user.has_perm('eliminar',instance)
+            check_permission =  user.has_perm('eliminar', proceso)
             if  check_permission:
-                instance.delete()
-                return Response({'mensaje':'el registro fue eliminado'})
+                queryset.delete()
+                return Response({"mensaje":"el registro fue eliminado"})
             else:
-                return Response({'mensaje':'tu no tienes permiso para eliminar el registro'})
+                return Response({"mensaje":"tu no tienes permiso"})
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
         

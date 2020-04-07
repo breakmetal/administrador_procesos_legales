@@ -15,15 +15,6 @@ class Ejecutivo(models.Model):
     obligacion = models.CharField( max_length = 8, null = False, choices = OBLIGACION, default = 'DAR')
     cuantia = models.CharField(max_length = 6,  null = False, default = 'minima' )
 
-    class Meta:
-        permissions = (
-            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver', 'ver'),
-            ('agregar', 'agregar'),
-            ('modificar', 'modificar'),
-            ('eliminar', 'eliminar'),
-        )
-        
     
     
     def calcular_cuantia(self):

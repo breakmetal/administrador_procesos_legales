@@ -9,12 +9,3 @@ class Actuacion(models.Model):
     termino = models.DateTimeField( null = False )
     registro = models.DateTimeField( null = False )
 
-    class Meta:
-        permissions = (
-            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver', 'ver'),
-            ('agregar', 'agregar'),
-            ('modificar', 'modificar'),
-            ('eliminar', 'eliminar'),
-        )
-

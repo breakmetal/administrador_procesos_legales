@@ -11,15 +11,7 @@ class Notificacion(models.Model):
     mensaje = models.CharField(max_length = 100, null = False, blank = False)
     expedicion = models.DateTimeField( null = False )
     limite = models.DateField( null = False )
-    
-    class Meta:
-        permissions = (
-            ('asignar_permisos', 'Asigna permisos sobre el objeto'),
-            ('ver', 'ver'),
-            ('agregar', 'agregar'),
-            ('modificar', 'modificar'),
-            ('eliminar', 'eliminar'),
-        )
+
 
 
     def fecha_limite(self, fecha, dias):

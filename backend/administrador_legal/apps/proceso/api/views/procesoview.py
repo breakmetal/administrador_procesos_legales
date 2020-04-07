@@ -45,7 +45,7 @@ class ProcesoViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        user = self.request.user.id
+        user = self.request.user
         check_permission = user.has_perm('modificar',instance)
         if  check_permission:
             serializer = ProcesoSerializer(
@@ -61,7 +61,7 @@ class ProcesoViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         try:
-            instance = Proceso.objects.get(radicado=pk)
+            instance = Proceso.objects.get(id=pk)
             user = self.request.user
             check_permission = user.has_perm('eliminar',instance)
             if check_permission:
@@ -69,10 +69,9 @@ class ProcesoViewSet(viewsets.ModelViewSet):
                 return Response('el proceso fue eliminado')
             else:
                 return Response('tu no tienes permiso para eliminar el proceso')
-        except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response(e.message, type(e))
         
-        return Response('hola2')
 
     def retrieve(self, request, pk=None):
         queryset = self.get_queryset()
@@ -85,13 +84,15 @@ class ProcesoViewSet(viewsets.ModelViewSet):
         procesos = get_objects_for_user(user, 'ver', klass=Proceso)
         return procesos
     
-    @action(detail=False, methods=['get'])
-    def listar_procesos_compartidos(self, request):
-        queryset = self.obtener_procesos_compartidos()
-        page = self.paginate_queryset(queryset)
-        serializer_context = {'request': request}
-        serializer = self.serializer_class(
-            page, context=serializer_context, many=True
+    @action(detail=True, methods=['get'])
+    def listar_procesos(self, request, pk = None):
+        user = self.request.user
+        queryset = get_objects_for_user(user, 'ver', klass=Proceso)
+        procesos = queryset.filter(id=pk)
+        page = self.paginate_queryset(procesos)
+        serializer_context = {'request': procesos}
+        serializer = self.get_serializer(
+            page, many=True
         )
         return self.get_paginated_response(serializer.data)
     

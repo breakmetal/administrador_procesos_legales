@@ -8,9 +8,14 @@ class ActuacionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ArchivoSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Archivo
         fields = '__all__'
+
+    def create(self, validated_data):
+       return Archivo.objects.create(**validated_data)
+
 
 class CautelarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,13 +49,10 @@ class PartesNSerializer(serializers.ModelSerializer):
         model = Partesn
         fields = '__all__'
     
-
 class PartesJSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partesj
         fields = '__all__'
-
-
 
 class PartesNDatosSerializer(serializers.ModelSerializer):
     persona = PersonaNaturalSerializer(many=False, read_only=True)
@@ -58,22 +60,11 @@ class PartesNDatosSerializer(serializers.ModelSerializer):
         model = Partesn
         fields = '__all__'
     
-        def create(self, validated_data):
-            parte = Partesn.objects.create(**validated_data)
-            assign_perm("asignar_permisos", request.user, parte)
-            assign_perm("ver", request.user, parte)
-            assign_perm("agregar", request.user, parte)
-            assign_perm("eliminar", request.user, parte)
-            assign_perm("modificar", request.user, parte)
-            return parte
-
 class PartesJDatosSerializer(serializers.ModelSerializer):
     empresa = PersonaJuridicaSerializer(many=False, read_only=True)
     class Meta:
         model = Partesj
         fields = '__all__'
-
-
 
 class ProcesoSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())

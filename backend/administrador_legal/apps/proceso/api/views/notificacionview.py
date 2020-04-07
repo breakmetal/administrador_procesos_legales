@@ -1,47 +1,36 @@
-from ...models import Notificacion
+from ...models import Notificacion, Proceso
 from rest_framework import viewsets
 from ..serializers import NotificacionSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from rest_framework.decorators import action
 
 class NotificacionViewSet(viewsets.ModelViewSet):
     queryset = Notificacion.objects.all()
     serializer_class = NotificacionSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        notificaciones = get_objects_for_user(user, 'ver', klass=Notificacion)
-        return notificaciones
-
     def create(self, request, *args, **kwargs):
         instance = request.data
-        serializer = NotificacionSerializer(data=instance)
-        serializer.is_valid(raise_exception=True)
-        notificacion = serializer.save()
-        assign_perm("asignar_permisos", request.user, notificacion)
-        assign_perm("ver", request.user, notificacion)
-        assign_perm("agregar", request.user, notificacion)
-        assign_perm("modificar", request.user, notificacion)
-        assign_perm("eliminar", request.user, notificacion)
-        return Response({"mensaje": "se agrego el registro"})
-
-    def list(self, request):
-        queryset = self.get_queryset() 
-        page = self.paginate_queryset(queryset)
-        serializer_context = {'request': request}
-        serializer = self.serializer_class(
-            page, context=serializer_context, many=True
-        )
-        return self.get_paginated_response(serializer.data)
+        proceso = Proceso.objects.get(id = instance["proceso"])
+        user = self.request.user
+        check_permission = user.has_perm('agregar', proceso)
+        if check_permission or proceso.user == user.id:
+            serializer = CautelarSerializer(data=instance)
+            serializer.is_valid(raise_exception=True)
+            actuacion = serializer.save()
+            return Response({"mensaje": "se agrego una notificacion"})
+        else:
+            return Response({"mensaje": "no tienes permiso"})
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
+        instance = Notificacion.objects.get(id = pk)
         user = self.request.user
-        check_permission = user.has_perm('modificar',instance)
+        proceso = Proceso.objects.get(id = instance.proceso.id)
+        check_permission = user.has_perm('modificar',proceso)
         if  check_permission:
-            serializer = NotificacionSerializer(
+            serializer = ActuacionSerializer(
                 instance=instance,
                 data=request.data,
                 context={'request': request}
@@ -50,22 +39,27 @@ class NotificacionViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         else:
-            return Response("tu no tienes permiso")
-        return Response(request)
+            return Response({"mensaje": "tu no tienes permiso"})
+
 
     def retrieve(self, request, pk=None):
-        queryset = self.get_queryset()
-        notificacion = get_object_or_404(queryset, pk=pk)
-        serializer = NotificacionSerializer(notificacion)
-        return Response(serializer.data)
+        user = self.request.user
+        notificacion = Notificacion.objects.get(id = pk)
+        proceso = Proceso.objects.get(id = notificacion.proceso.id)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            serializer = self.get_serializer(notificacion)
+            return Response(serializer.data)
+        else:
+            return Response({"mensaje": "tu no tienes permiso"})
             
     
     def destroy(self, request, pk=None):
-        instance = self.get_object()
         try:
-            instance = self.get_object()
+            instance = Notificacion.objects.get(id = pk)
+            proceso = Proceso.objects.get(id = instance.proceso.id)
             user = self.request.user
-            check_permission = user.has_perm('eliminar',instance)
+            check_permission = user.has_perm('eliminar', proceso)
             if  check_permission:
                 instance.delete()
                 return Response('el registro fue eliminado')
@@ -73,4 +67,21 @@ class NotificacionViewSet(viewsets.ModelViewSet):
                 return Response('tu no tienes permiso para eliminar el registro')
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+    @action(detail=True, methods=['get'])
+    def listar_notificaciones(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            notificaciones = Notificacion.objects.filter(proceso = proceso.id)
+            page = self.paginate_queryset(notificaciones)
+            serializer_context = {'request': notificaciones}
+            serializer = self.get_serializer(
+            page, many=True
+        )
+            return self.get_paginated_response(serializer.data)
+        else:
+            return Response('tu no tienes permiso para ver los registros')
         
