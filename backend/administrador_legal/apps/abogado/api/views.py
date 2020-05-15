@@ -73,7 +73,7 @@ class EmpresaView(viewsets.ModelViewSet):
         try:
             instance = self.get_object()
             user = self.request.user.id
-            if user == instance.user_id:
+            if user == instance.abogado_id:
                 instance.delete()
                 return Response('el registro fue eliminado')
             else:

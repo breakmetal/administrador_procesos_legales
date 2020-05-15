@@ -1,0 +1,53 @@
+table {
+    width: 100%;
+}
+.container-flex{
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (min-width: 800px){
+    .container-flex{
+        align-content: space-evenly ;
+        justify-content: center;
+    }
+    .cards{
+        width: 30vw;
+    }
+    .card{
+        width: 90%;
+        margin-top: 30px;
+    }
+
+    
+}
+@media screen and (min-width: 600px) and (max-width: 800px)
+{
+    .container-flex{
+        align-content: space-evenly ;
+        flex-wrap: wrap;
+    }
+    .cards{
+        width: 50vw;
+    }
+   
+    
+}
+@media screen and (max-width: 600px){
+    .container-flex{
+
+        justify-content: center;
+        align-content: space-between;
+        flex-wrap: wrap;
+    }
+    .cards{
+        width: 80vw;
+        margin-top: 15px;
+    }
+   
+
+}
+.contacto{
+    background-color: cornflowerblue;
+    color: white;
+}

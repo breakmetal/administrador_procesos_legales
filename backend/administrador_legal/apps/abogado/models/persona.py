@@ -11,10 +11,10 @@ class Persona(models.Model):
     apellido = models.CharField( max_length = 50, null = False, blank = False )
     nacimiento = models.DateField()
     ocupacion = models.CharField( max_length = 50, null = False, blank = False )
+    email = models.CharField(max_length = 50)
+    celular = models.CharField(max_length=20)
+    fijo = models.CharField(max_length=8, blank=True)
+    direccion = models.CharField(max_length = 60)
+
     
-    def contact_default():
-       return {'email': 'to1@example.com',
-              'direcciones':[{'ubicacion': 'avenida siempre viva 742', 'telefono': '000000', 'descripcion': 'fijo'}]    
-       }
     
-    contact_info = JSONField( "ContactInfo", default=contact_default )
