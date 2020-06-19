@@ -1,6 +1,8 @@
 from ...models import Proceso
+from ....despacho.models import Despacho, Juez
+from rest_framework import generics
 from rest_framework import viewsets
-from ..serializers import ProcesoSerializer
+from ..serializers import ProcesoSerializer, DespachoSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
@@ -102,3 +104,22 @@ class ProcesoViewSet(viewsets.ModelViewSet):
         proceso= get_object_or_404(queryset, pk=pk)
         serializer = ProcesoSerializer(proceso)
         return Response(serializer.data)
+
+
+class DespachoViewSet(viewsets.ModelViewSet):
+    serializer_class = DespachoSerializer
+    #paginate_by = None
+    queryset = Despacho.objects.all()
+        
+    def get_queryset(self):
+        queryset = Despacho.objects.all()
+        return queryset
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        nombre = self.request.query_params.get('despacho', None)
+        queryset = queryset.filter(despacho__contains = nombre)
+        serializer = DespachoSerializer(queryset, many = True)
+        return  Response(serializer.data)
+
+#http://localhost:4200/dashboard/proceso/listar-procesos

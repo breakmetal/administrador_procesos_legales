@@ -9,8 +9,10 @@ class JuezSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DespachoSerializer(serializers.ModelSerializer):
+    juez = JuezSerializer(many=False, read_only=True)
     class Meta:
         model = Despacho
+        
         fields = [
             'departamento',
             'ciudad',
@@ -19,6 +21,6 @@ class DespachoSerializer(serializers.ModelSerializer):
             'despacho',
             'direccion',
             'telefono',
-            'juez',
+            'juez'
             ]
         

@@ -138,3 +138,16 @@ class ArchivoViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
         else:
             return Response('tu no tienes permiso para ver los registros')
+
+    
+    
+    @action(detail=True, methods=['get'])
+    def contar_archivos(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            archivos = Archivo.objects.filter(proceso = proceso.id).count()
+            return Response(archivos)
+        else:
+            return Response('tu no tienes permiso para ver los registros')

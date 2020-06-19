@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.contrib.auth.models import User
+from rest_framework.decorators import action
 from rest_framework import generics
 from ..models import *
 from rest_framework.response import Response
@@ -82,6 +84,14 @@ class EmpresaView(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         
         return Response('hola2')
+    
+    @action(detail=False, methods=['get'])
+    def partesJuridicas(self, request):
+        queryset = self.get_queryset()
+        nombre = self.request.query_params.get('nombre', None)
+        queryset = queryset.filter(nombre__contains = nombre)
+        serializer = EmpresaSerializer(queryset, many = True)
+        return  Response(serializer.data)
 
 
 class PersonaView(viewsets.ModelViewSet):
@@ -130,3 +140,11 @@ class PersonaView(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         
         return Response('hola2')
+
+    @action(detail=False, methods=['get'])
+    def partesPersonas(self, request):
+        queryset = self.get_queryset()
+        nombre = self.request.query_params.get('nombre', None)
+        queryset = queryset.filter(Q(nombre__contains = nombre) | Q(apellido__contains = nombre))
+        serializer = PersonaSerializer(queryset, many = True)
+        return  Response(serializer.data)

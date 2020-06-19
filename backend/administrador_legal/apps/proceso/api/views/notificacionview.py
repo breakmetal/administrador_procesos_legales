@@ -6,6 +6,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from guardian.shortcuts import assign_perm, get_objects_for_user
 from rest_framework.decorators import action
+from datetime import date
+from datetime import timedelta 
 
 class NotificacionViewSet(viewsets.ModelViewSet):
     queryset = Notificacion.objects.all()
@@ -17,20 +19,20 @@ class NotificacionViewSet(viewsets.ModelViewSet):
         user = self.request.user
         check_permission = user.has_perm('agregar', proceso)
         if check_permission or proceso.user == user.id:
-            serializer = CautelarSerializer(data=instance)
+            serializer = NotificacionSerializer(data=instance)
             serializer.is_valid(raise_exception=True)
             actuacion = serializer.save()
             return Response({"mensaje": "se agrego una notificacion"})
         else:
             return Response({"mensaje": "no tienes permiso"})
 
-    def update(self, request, *args, **kwargs):
+    def update(self, request, pk=None):
         instance = Notificacion.objects.get(id = pk)
         user = self.request.user
         proceso = Proceso.objects.get(id = instance.proceso.id)
         check_permission = user.has_perm('modificar',proceso)
         if  check_permission:
-            serializer = ActuacionSerializer(
+            serializer = NotificacionSerializer(
                 instance=instance,
                 data=request.data,
                 context={'request': request}
@@ -75,13 +77,37 @@ class NotificacionViewSet(viewsets.ModelViewSet):
         proceso = Proceso.objects.get(id = pk)
         check_permission = user.has_perm('ver',proceso)
         if check_permission:
-            notificaciones = Notificacion.objects.filter(proceso = proceso.id)
-            page = self.paginate_queryset(notificaciones)
+            notificaciones = Notificacion.objects.filter(proceso = proceso.id).order_by('limite')
             serializer_context = {'request': notificaciones}
             serializer = self.get_serializer(
-            page, many=True
+            notificaciones, many=True
         )
-            return self.get_paginated_response(serializer.data)
+            return Response(serializer.data)
         else:
             return Response('tu no tienes permiso para ver los registros')
-        
+
+    
+    @action(detail=True, methods=['get'])
+    def contar_notificaciones(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            notificaciones = Notificacion.objects.filter(proceso = proceso.id).count()
+            return Response(notificaciones)
+        else:
+            return Response('tu no tienes permiso para ver los registros')
+    
+     
+    @action(detail=True, methods=['get'])
+    def alerta(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            fechaHoy = date.today()
+            fechaQuery = fechaHoy + timedelta(days=5) 
+            notificaciones = Notificacion.objects.filter(limite__gte = fechaHoy).filter(limite__lte = fechaQuery).count()
+            return Response(notificaciones)
+        else:
+            return Response('tu no tienes permiso para ver los registros')

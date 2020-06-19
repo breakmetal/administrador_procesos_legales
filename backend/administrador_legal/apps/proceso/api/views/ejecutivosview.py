@@ -48,16 +48,19 @@ class EjecutivoViewSet(viewsets.ModelViewSet):
             return Response({"mensaje": "tu no tienes permiso"})
 
     def retrieve(self, request, pk=None):
-        ejecutivo = Ejecutivo.objects.get(proceso = pk)
-        user = self.request.user
-        proceso = Proceso.objects.get(id = pk)
-        check_permission = user.has_perm('ver',proceso)
-        if  check_permission:
-            serializer = EjecutivoSerializer(ejecutivo)
-            return Response(serializer.data)
-        else:
-            return Response({"mensaje": "tu no tienes permiso para ver el registro"})
+        try:
+            ejecutivo =  Ejecutivo.objects.get(proceso = pk)
+            user = self.request.user
+            proceso = Proceso.objects.get(id = pk)
+            check_permission = user.has_perm('ver',proceso)
+            if  check_permission:
+                serializer = EjecutivoSerializer(ejecutivo)
+                return Response(serializer.data)
+            else:
+                return Response({"mensaje": "tu no tienes permiso para ver el registro"})
             
+        except:
+            return Response('')
     
     def destroy(self, request, pk=None):
         try:

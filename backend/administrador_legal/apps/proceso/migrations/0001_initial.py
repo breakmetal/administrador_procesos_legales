@@ -92,17 +92,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Ejecutivo',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pretencion', django.contrib.postgres.fields.jsonb.JSONField(default=apps.proceso.models.ejecutivo.Ejecutivo.pretencion_default, verbose_name='pretencion')),
-                ('titulo', models.CharField(choices=[('VALOR', 'valor'), ('EJECUTIVO', 'ejecutivo')], default='VALOR', max_length=9)),
-                ('obligacion', models.CharField(choices=[('DAR', 'dar'), ('HACER', 'hacer'), ('NO_HACER', 'no hacer')], default='DAR', max_length=8)),
-                ('cuantia', models.CharField(default='minima', max_length=6)),
-                ('proceso', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='proceso.Proceso')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Cautelar',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

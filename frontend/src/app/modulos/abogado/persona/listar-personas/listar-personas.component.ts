@@ -4,7 +4,7 @@ import { ConfirmDialogComponent } from "../../../compartidos/confirm-dialog/conf
 import { MatDialog} from '@angular/material/dialog';
 import { PersonaService } from '../../servicios/persona.service';
 import {MatPaginator} from '@angular/material/paginator';
-
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface Persona {
   documento : string,
@@ -33,11 +33,22 @@ export class ListarPersonasComponent implements OnInit {
   next : number;
   previous : number;
   pageIndex : number;
-  constructor(private listar:ListarPersonasService, private personaService:PersonaService, public dialog: MatDialog) { }
+  constructor(private listar:ListarPersonasService, private personaService:PersonaService, public dialog: MatDialog,private _snackBar: MatSnackBar) { }
 
   
 
   ngOnInit() {
+    this.listadoInicial()
+  }
+  ngAfterViewInit() {
+    this.paginator.page.subscribe(
+       (event) => this.obtenerListadoPersonas(event)
+    );
+  }
+  /**
+   * listado inicial
+   */
+  private listadoInicial(){
     this.listar.obtenerPersonas().subscribe(res => {
       this.persona = res['results'];
       this.count = res['count'];
@@ -46,12 +57,6 @@ export class ListarPersonasComponent implements OnInit {
       this.pageIndex = 0;      
     }); 
   }
-  ngAfterViewInit() {
-    this.paginator.page.subscribe(
-       (event) => this.obtenerListadoPersonas(event)
-    );
-  }
-
   /**
    * obtener listadoPersonas
    */
@@ -77,6 +82,15 @@ export class ListarPersonasComponent implements OnInit {
     }
   }
 
+  /**
+   * notificacion de las acciones a traves de un snack-bar
+   */
+  private openSnackBar(mensaje, accion):void {
+    this._snackBar.open(mensaje, accion, {
+      duration: 5000,
+    });
+  }
+
   confirmDialog(registro:any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data:{titulo:'alerta', mensaje:`estas seguro de querer eliminar el registro de ${registro.nombre} ${registro.apellido}`}
@@ -84,7 +98,8 @@ export class ListarPersonasComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if(dialogResult){
         this.personaService.eliminarPersona(registro.id).subscribe(result => {
-          console.log(result)
+          this.listadoInicial()
+          this.openSnackBar("registro eliminado", "☠️")
         })
       }
     });

@@ -50,4 +50,5 @@ export class PersonaService {
     const ruta = `${this.url}${id}/`
     return this.http.patch(ruta,info)
   }
+  
 }

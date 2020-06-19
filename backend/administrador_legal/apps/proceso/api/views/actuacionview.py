@@ -83,15 +83,21 @@ class ActuacionViewSet(viewsets.ModelViewSet):
         proceso = Proceso.objects.get(id = pk)
         check_permission = user.has_perm('ver',proceso)
         if check_permission:
-            actuaciones = Actuacion.objects.filter(proceso = proceso.id)
-            page = self.paginate_queryset(actuaciones)
-            serializer_context = {'request': actuaciones}
-            serializer = self.get_serializer(
-            page, many=True
-        )
-            return self.get_paginated_response(serializer.data)
+            actuaciones = Actuacion.objects.filter(proceso = pk)    
+            serializer = ActuacionSerializer(actuaciones, many=True)
+            return Response(serializer.data)
         else:
             return Response('tu no tienes permiso para ver los registros')
         
+    @action(detail=True, methods=['get'])
+    def contar_actuaciones(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            actuaciones = Actuacion.objects.filter(proceso = pk).count()
+            return Response(actuaciones)
+        else:
+            return Response('tu no tienes permiso para ver los registros')
 
     

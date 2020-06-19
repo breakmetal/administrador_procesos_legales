@@ -1,0 +1,35 @@
+.container-flex{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap:wrap;
+}
+ 
+ .example-spacer {
+   flex: 1 1 auto;
+ }
+ .cards{
+   width: 40vw;
+   margin-top: 30px;
+ }
+ table {
+   width: 100%;
+   padding-left: 3%;
+   padding-right: 3%;
+}
+.links{
+  height: 80px;
+  width: 20%;
+
+}
+.mat-card-actions{
+  text-align: center;
+}
+.mat-card-header{
+  border-radius: 2px;
+}
+.mat-table{
+
+}
+.mat-toolbar{
+}

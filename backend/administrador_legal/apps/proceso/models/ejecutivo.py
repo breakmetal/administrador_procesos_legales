@@ -5,14 +5,12 @@ from django.contrib.postgres.fields import JSONField
 class Ejecutivo(models.Model):
     OBLIGACION = (('DAR', 'dar'), ('HACER', 'hacer'), ('NO_HACER', 'no hacer'))
     TITULO = (('VALOR', 'valor'), ('EJECUTIVO', 'ejecutivo'))
+    CLASE = (('SINGULAR', 'singular'), ('HIPOTECARIO', 'hipotecario'), ('MIXTO', 'mixto'))
     proceso = models.OneToOneField( Proceso, on_delete = models.CASCADE)
-    def pretencion_default():
-       return {
-              'pretencion':[{'nombre': 'pepito', 'pretencion': '000000', 'descripcion': 'mucho dinero'}]    
-       }
-    pretencion = JSONField( "pretencion", default=pretencion_default )
     titulo = models.CharField( max_length = 9, null = False, choices = TITULO, default = 'VALOR')
     obligacion = models.CharField( max_length = 8, null = False, choices = OBLIGACION, default = 'DAR')
+    clase = models.CharField( max_length = 11, null = False, choices = CLASE, default = 'SINGULAR')
+    pretension = models.CharField(max_length = 20,  null=True )
     cuantia = models.CharField(max_length = 6,  null = False, default = 'minima' )
 
     

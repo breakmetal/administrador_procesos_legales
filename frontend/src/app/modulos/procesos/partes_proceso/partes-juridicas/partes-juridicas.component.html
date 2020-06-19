@@ -1,0 +1,61 @@
+<mat-card id="card" >
+	<mat-card-title style="text-align: center;">
+		Partes Juridicas
+	</mat-card-title>
+
+	<mat-card-content>
+		<mat-accordion class="example-headers-align" multi>
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+				  agregar empresa
+				</mat-panel-title>
+				<mat-panel-description>
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+				<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+					<mat-form-field >
+						<input type="text"
+							   placeholder="Empresa"
+							   aria-label="Number"
+							   matInput
+							   formControlName='empresa'
+							   [matAutocomplete]="auto">
+						<mat-autocomplete #auto="matAutocomplete">
+						  <mat-option *ngFor="let empresa of empresas" [value]="empresa.id">
+							{{empresa.nombre}} {{empresa.apellido}}
+						  </mat-option>
+						</mat-autocomplete>
+						<mat-error *ngIf="form.get('empresa').hasError('required')">
+							<strong>Este campo es obligatorio</strong>
+						</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Rol</mat-label>
+						<select matNativeControl formControlName='rol' required>
+						  <option value="DEMANDADO">Demandado</option>
+						  <option value="DEMANDANTE">Demandante</option>
+						</select>
+						<mat-error *ngIf="form.get('rol').hasError('required')">
+							<strong>Este campo es obligatorio</strong>
+						  </mat-error>
+					</mat-form-field>
+					<br>
+					<button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
+						enviar<mat-icon>send</mat-icon>
+					</button>
+				</form>
+			<br>
+			
+		</mat-expansion-panel>
+	</mat-accordion>
+		<div  *ngFor="let parte of partes" class="container-row" style="text-align: center;"> 
+				<div>{{ parte.empresa.nombre }}</div>
+				<div>{{parte.rol}}</div>
+				<div><button  mat-icon-button color="warn" (click)="eliminar(parte.id)">
+					<mat-icon>delete_forever</mat-icon>
+				</button>
+				</div>
+		</div>
+	</mat-card-content>
+</mat-card>

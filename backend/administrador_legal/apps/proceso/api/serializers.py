@@ -1,6 +1,7 @@
 from ..models import *
 from rest_framework import serializers
 from ...abogado.models import Abogado, Persona, Empresa
+from ...despacho.models import Despacho, Juez
     
 class ActuacionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,10 +67,16 @@ class PartesJDatosSerializer(serializers.ModelSerializer):
         model = Partesj
         fields = '__all__'
 
+class DespachoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Despacho
+        fields = '__all__'
+
 class ProcesoSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     partesNaturales = PartesNDatosSerializer(many=True, read_only=True)
     partesJuridicas = PartesJDatosSerializer(many=True, read_only=True)
+    Despacho = DespachoSerializer(many=False, read_only=True)
     class Meta:
         model = Proceso
         fields = '__all__'

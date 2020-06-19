@@ -38,13 +38,13 @@ class CautelarViewSet(viewsets.ModelViewSet):
         )
         return self.get_paginated_response(serializer.data)
 
-    def update(self, request, *args, **kwargs):
+    def update(self, request, pk = None):
         instance = Cautelar.objects.get(id = pk)
         user = self.request.user
         proceso = Proceso.objects.get(id = instance.proceso.id)
         check_permission = user.has_perm('modificar',proceso)
         if  check_permission:
-            serializer = ActuacionSerializer(
+            serializer = CautelarSerializer(
                 instance=instance,
                 data=request.data,
                 context={'request': request}
@@ -90,11 +90,19 @@ class CautelarViewSet(viewsets.ModelViewSet):
         check_permission = user.has_perm('ver',proceso)
         if check_permission:
             cautelares = Cautelar.objects.filter(proceso = proceso.id)
-            page = self.paginate_queryset(cautelares)
-            serializer_context = {'request': cautelares}
-            serializer = self.get_serializer(
-            page, many=True
-        )
-            return self.get_paginated_response(serializer.data)
+            serializer = CautelarSerializer(cautelares, many=True)
+            return Response(serializer.data)
+        else:
+            return Response('tu no tienes permiso para ver los registros')
+
+    
+    @action(detail=True, methods=['get'])
+    def contar_cautelares(self, request, pk = None):
+        user = self.request.user
+        proceso = Proceso.objects.get(id = pk)
+        check_permission = user.has_perm('ver',proceso)
+        if check_permission:
+            cautelares = Cautelar.objects.filter(proceso = proceso.id).count()
+            return Response(cautelares)
         else:
             return Response('tu no tienes permiso para ver los registros')

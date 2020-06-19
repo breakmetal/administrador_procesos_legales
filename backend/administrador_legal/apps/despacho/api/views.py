@@ -1,14 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import RetrieveModelMixin
 from ..models import *
-from rest_framework import viewsets
-from .serializers import *
+from .serializers import DespachoSerializer
 
-class DespachoView(viewsets.ModelViewSet):
+class DespachoDetail(GenericViewSet, RetrieveModelMixin):
     queryset = Despacho.objects.all()
     serializer_class = DespachoSerializer
 
-class JuezView(viewsets.ModelViewSet):
-    queryset = Juez.objects.all()
-    serializer_class = JuezSerializer
+

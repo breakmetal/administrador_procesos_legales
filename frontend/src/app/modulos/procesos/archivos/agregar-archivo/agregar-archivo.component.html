@@ -1,0 +1,15 @@
+<form [formGroup]="form" (ngSubmit)="registrar()" novalidate> 
+    <input type="file" formControlName='nombre_archivo'  (change)="procesarArchivo($event)">
+    <br>
+    <mat-form-field appearance="outline">
+        <mat-label>Descripcion</mat-label>
+        <input formControlName='descripcion' matInput>
+    </mat-form-field>
+    <br>
+    <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
+        <mat-icon>send</mat-icon>enviar
+    </button>
+    <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
+        <mat-icon>cancelar</mat-icon>cancelar
+    </a>
+</form>

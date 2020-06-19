@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatDialogModule} from '@angular/material/dialog'; 
 import {MatCardModule} from '@angular/material/card'; 
 import {MatListModule} from '@angular/material/list'; 
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import {MatGridListModule} from '@angular/material/grid-list'; 
 import { AbogadoRoutingModule } from './abogado-routing.module';
 import { ListarPersonasComponent } from './persona/listar-personas/listar-personas.component';
@@ -40,7 +41,8 @@ import { MostrarEmpresaComponent } from './empresa/mostrar-empresa/mostrar-empre
     MatDialogModule,
     MatCardModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    MatSnackBarModule
   ],
 })
 export class AbogadoModule { }

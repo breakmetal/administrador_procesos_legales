@@ -4,6 +4,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatListModule} from '@angular/material/list'; 
+import { MatMenuModule } from "@angular/material/menu";
 import {MatDividerModule} from '@angular/material/divider'; 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MainBoardComponent } from './main-board/main-board.component';
@@ -20,7 +21,8 @@ import { IndexPanelComponent } from './index-panel/index-panel.component';
     MatToolbarModule,
     MatIconModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatMenuModule
   ]
 })
 export class DashboardModule { }

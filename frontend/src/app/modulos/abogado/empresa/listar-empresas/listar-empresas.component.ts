@@ -3,6 +3,7 @@ import { ConfirmDialogComponent } from "../../../compartidos/confirm-dialog/conf
 import { MatDialog} from '@angular/material/dialog';
 import { EmpresaService } from '../../servicios/empresa.service';
 import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface Empresa{
   documento: number;
@@ -30,7 +31,7 @@ export class ListarEmpresasComponent implements OnInit {
   previous : number;
   pageIndex : number;
 
-  constructor(private empresaService : EmpresaService, public dialog: MatDialog) { }
+  constructor(private empresaService : EmpresaService, public dialog: MatDialog,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
      this.listadoInicial()
@@ -69,6 +70,14 @@ export class ListarEmpresasComponent implements OnInit {
     this.pageIndex--
    }
   }
+   /**
+   * notificacion de las acciones a traves de un snack-bar
+   */
+  private openSnackBar(mensaje, accion):void {
+    this._snackBar.open(mensaje, accion, {
+      duration: 5000,
+    });
+  }
 
   confirmDialog(registro:any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -78,6 +87,7 @@ export class ListarEmpresasComponent implements OnInit {
       if(dialogResult){
         this.empresaService.eliminarEmpresa(registro.id).subscribe(result => {
           this.listadoInicial()
+          this.openSnackBar("registro eliminado", "☠️")
         })
       }
     });
