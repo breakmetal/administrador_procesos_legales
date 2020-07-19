@@ -1,4 +1,8 @@
-<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+    <div>
+      <span class="titulo">Datos generales</span>
+    </div>
     <mat-form-field appearance="outline">
       <mat-label>Documento</mat-label>
       <input formControlName='documento' matInput>
@@ -9,7 +13,7 @@
         <strong>Solo numeros</strong>
       </mat-error>
     </mat-form-field>
-    <br>
+
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input formControlName='nombre' matInput>
@@ -32,6 +36,11 @@
         </mat-error>
       </mat-form-field>
       <br>
+      <mat-divider></mat-divider>
+      <br>
+      <div>
+        <span class="titulo">Datos de contacto</span>
+      </div>
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input formControlName='email' matInput>
@@ -42,7 +51,7 @@
           <strong>Eso no es un correo!</strong>
         </mat-error>
       </mat-form-field>
-      <br>
+    
       <mat-form-field appearance="outline">
         <mat-label>Celular</mat-label>
         <input formControlName='celular' matInput>
@@ -61,7 +70,7 @@
           <strong>Solo numeros</strong>
         </mat-error>
       </mat-form-field>
-      <br>
+
       <mat-form-field appearance="outline">
         <mat-label>Direccion</mat-label>
         <input formControlName='direccion' matInput>
@@ -73,11 +82,13 @@
         </mat-error>
       </mat-form-field>
       <br>
-      <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
-        <mat-icon>send</mat-icon>enviar
-      </button>
-      <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
-        <mat-icon>cancelar</mat-icon>cancelar
-      </a>
-</form>
-
+      <div>
+        <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
+          <mat-icon>send</mat-icon>enviar
+        </button>
+        <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
+          <mat-icon>cancelar</mat-icon>cancelar
+        </a>
+      </div>
+  </form>
+</mat-card>

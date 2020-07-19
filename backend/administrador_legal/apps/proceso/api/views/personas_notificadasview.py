@@ -29,7 +29,7 @@ class PersonasNotificadasView(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=instance)
             serializer.is_valid(raise_exception=True)
             notificado = serializer.save()
-            return Response({"mensaje": "se agrego una empresa"})
+            return Response({"mensaje": "se agrego una persona"})
         else:
             return Response({"mensaje": "no tienes permiso"})
         

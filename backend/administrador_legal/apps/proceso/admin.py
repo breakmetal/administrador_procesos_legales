@@ -18,4 +18,6 @@ admin.site.register(Notificacion)
 admin.site.register(Proceso)
 admin.site.register(Partesn)
 admin.site.register(Partesj)
+admin.site.register(PersonasNotificadas)
+admin.site.register(EmpresasNotificadas)
 

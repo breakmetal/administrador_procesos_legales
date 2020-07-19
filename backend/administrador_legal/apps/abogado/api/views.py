@@ -7,6 +7,10 @@ from ..models import *
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import *
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
+
 
 class UsersView(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -148,3 +152,11 @@ class PersonaView(viewsets.ModelViewSet):
         queryset = queryset.filter(Q(nombre__contains = nombre) | Q(apellido__contains = nombre))
         serializer = PersonaSerializer(queryset, many = True)
         return  Response(serializer.data)
+
+
+    @action(detail=False, methods=['get'])
+    def lista_prueba(self, request):
+        queryset = Persona.objects.all()
+        serializer = PersonaSerializer(queryset, many = True)
+        return Response(serializer.data)
+        

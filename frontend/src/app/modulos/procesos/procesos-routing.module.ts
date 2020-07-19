@@ -10,6 +10,11 @@ import { AgregarCautelarComponent } from "./calutelares/agregar-cautelar/agregar
 import { AgregarNotificacionComponent } from "./notificaciones/agregar-notificacion/agregar-notificacion.component";
 import { AgregarArchivoComponent } from "./archivos/agregar-archivo/agregar-archivo.component";
 import { MostrarNotificacionComponent } from './notificaciones/mostrar-notificacion/mostrar-notificacion.component';
+import { ListarNotificacionesComponent } from './notificaciones/listar-notificaciones/listar-notificaciones.component';
+import { MostrarActuacionComponent } from "./actuaciones/mostrar-actuacion/mostrar-actuacion.component";
+import { ListarArchivosComponent } from "./archivos/listar-archivos/listar-archivos.component";
+import { ListarCautelarComponent } from './calutelares/listar-cautelar/listar-cautelar.component';
+import { MostrarCautelarComponent } from './calutelares/mostrar-cautelar/mostrar-cautelar.component';
 
 const routes: Routes = [
   {
@@ -47,12 +52,16 @@ const routes: Routes = [
     component: AgregarActuacionComponent,
   },
   {
-    path: 'listar-actuaciones',
+    path: 'listar-actuaciones/:proceso',
     component: ListarActuacionesComponent,
   },
   {
     path: 'actualizar-actuacion/:accion/:id',
     component: AgregarActuacionComponent,
+  },
+  {
+    path: 'mostrar-actuacion/:id',
+    component: MostrarActuacionComponent
   },
   /**
    * API cautelar
@@ -60,6 +69,14 @@ const routes: Routes = [
   {
     path: 'agregar-cautelar/:accion/:proceso',
     component: AgregarCautelarComponent,
+  },
+  {
+    path: 'listar-cautelares/:proceso',
+    component: ListarCautelarComponent,
+  },
+  {
+    path: 'mostrar-cautelar/:id',
+    component: MostrarCautelarComponent,
   },
   {
     path: 'actualizar-cautelar/:accion/:id',
@@ -78,6 +95,10 @@ const routes: Routes = [
   },
   {
     path: 'listar-notificaciones/:proceso',
+    component: ListarNotificacionesComponent,
+  },
+  {
+    path: 'mostrar-notificacion/:id',
     component: MostrarNotificacionComponent,
   },
   /**
@@ -86,6 +107,10 @@ const routes: Routes = [
   {
     path: 'agregar-archivo/:accion/:proceso',
     component: AgregarArchivoComponent,
+  },
+  {
+    path: 'listar-archivos/:proceso',
+    component: ListarArchivosComponent,
   },
 ];
 

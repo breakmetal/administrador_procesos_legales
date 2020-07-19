@@ -1,53 +1,21 @@
-table {
+.titulo {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+table{
     width: 100%;
 }
-.container-flex{
-    display: flex;
-    flex-direction: row;
-}
 
-@media screen and (min-width: 800px){
-    .container-flex{
-        align-content: space-evenly ;
-        justify-content: center;
+@media screen and (min-width: 800px) {
+    .mat-card{
+        width: 40%;
+        position: relative;
+        left: 30%;
     }
-    .cards{
-        width: 30vw;
-    }
-    .card{
-        width: 90%;
-        margin-top: 30px;
-    }
+ }
 
-    
-}
-@media screen and (min-width: 600px) and (max-width: 800px)
-{
-    .container-flex{
-        align-content: space-evenly ;
-        flex-wrap: wrap;
+ @media screen and (min-width: 500px) and (max-width: 700px)  {
+    .mat-card{
+        width: 95%;
     }
-    .cards{
-        width: 50vw;
-    }
-   
-    
-}
-@media screen and (max-width: 600px){
-    .container-flex{
-
-        justify-content: center;
-        align-content: space-between;
-        flex-wrap: wrap;
-    }
-    .cards{
-        width: 80vw;
-        margin-top: 15px;
-    }
-   
-
-}
-.contacto{
-    background-color: cornflowerblue;
-    color: white;
-}
+ }

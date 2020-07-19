@@ -1,0 +1,47 @@
+.break{
+    hyphens: auto;
+}
+table{
+    width: 100%;
+    text-align: center;    
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+.titulo {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+@media screen and (max-width: 800px) {
+    table thead,th{
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table td {
+        display: block;
+        font-size: 1.2em;
+        text-align: right;
+        padding: 10px;
+    }
+
+    table td:before{
+        content: attr(data-label);
+        float: left;
+        font-size: 1em;
+        padding: 1px 5px;
+        font-weight: bold;
+    }
+    .cards{
+        display: flex;
+        flex-flow: column wrap;
+        flex-direction: column;
+    }
+
+
+}

@@ -11,6 +11,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatDialogModule} from '@angular/material/dialog'; 
 import {MatCardModule} from '@angular/material/card'; 
+import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatListModule} from '@angular/material/list'; 
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import {MatGridListModule} from '@angular/material/grid-list'; 
@@ -42,7 +43,8 @@ import { MostrarEmpresaComponent } from './empresa/mostrar-empresa/mostrar-empre
     MatCardModule,
     MatListModule,
     MatGridListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatToolbarModule
   ],
 })
 export class AbogadoModule { }

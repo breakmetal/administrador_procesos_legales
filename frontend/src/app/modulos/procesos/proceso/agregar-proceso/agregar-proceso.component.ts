@@ -104,9 +104,9 @@ export class AgregarProcesoComponent implements OnInit {
     dataParse = this.formatDate(this.form.value.fecha_finalizacion)
     this.form.value.fecha_finalizacion = dataParse*/
     if (this.accion === 'actualizar') {
-      this.procesoService.actualizarProceso(this.id, this.form.value).subscribe(proceso => console.log(proceso))
+      this.procesoService.actualizarProceso(this.id, this.form.value).subscribe(proceso => this.location.back())
     }else{
-      this.procesoService.agregarProcesos(this.form.value).subscribe(proceso => console.log(proceso))
+      this.procesoService.agregarProcesos(this.form.value).subscribe(proceso => this.location.back())
     }
     this.location.back()
   }

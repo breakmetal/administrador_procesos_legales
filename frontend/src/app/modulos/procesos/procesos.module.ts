@@ -18,6 +18,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { CompartidosModule } from "../compartidos/compartidos.module";
 
@@ -37,6 +40,12 @@ import { AgregarNotificacionComponent } from './notificaciones/agregar-notificac
 import { MostrarNotificacionComponent } from './notificaciones/mostrar-notificacion/mostrar-notificacion.component';
 import { AgregarArchivoComponent } from './archivos/agregar-archivo/agregar-archivo.component';
 import { DespachoComponent } from './despachos/despacho/despacho.component';
+import { PersonasNotificadasComponent } from './notificaciones/personas-notificadas/personas-notificadas.component';
+import { EmpresasNotificadasComponent } from './notificaciones/empresas-notificadas/empresas-notificadas.component';
+import { MostrarActuacionComponent } from './actuaciones/mostrar-actuacion/mostrar-actuacion.component';
+import { ListarArchivosComponent } from './archivos/listar-archivos/listar-archivos.component';
+import { ArchivoNombrePipe } from './pipes/archivo-nombre.pipe';
+import { MostrarCautelarComponent } from './calutelares/mostrar-cautelar/mostrar-cautelar.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +63,13 @@ import { DespachoComponent } from './despachos/despacho/despacho.component';
     AgregarNotificacionComponent,
     MostrarNotificacionComponent,
     AgregarArchivoComponent,
-    DespachoComponent
+    DespachoComponent,
+    PersonasNotificadasComponent,
+    EmpresasNotificadasComponent,
+    MostrarActuacionComponent,
+    ListarArchivosComponent,
+    ArchivoNombrePipe,
+    MostrarCautelarComponent
   ],
   imports: [
     CommonModule,
@@ -76,7 +91,10 @@ import { DespachoComponent } from './despachos/despacho/despacho.component';
     MatAutocompleteModule,
     MatToolbarModule,
     MatExpansionModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSnackBarModule
   ]
 })
 export class ProcesosModule { }

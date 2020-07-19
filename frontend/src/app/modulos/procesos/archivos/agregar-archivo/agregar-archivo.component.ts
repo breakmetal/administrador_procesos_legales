@@ -55,6 +55,9 @@ export class AgregarArchivoComponent implements OnInit {
     console.log(extension[extension.length-1])
     return extension[-1]
   }
+  volver(): void{
+    this.location.back()
+  }
 
 
   registrar(){
@@ -64,7 +67,8 @@ export class AgregarArchivoComponent implements OnInit {
     formData.append('archivo', this.form.get('archivo').value);
     formData.append('descripcion', this.form.get('descripcion').value);
     this.procesoService.agregarArchivo(formData).subscribe( data => 
-      console.log(data)
+      this.volver()
     )
+    
   }
 }

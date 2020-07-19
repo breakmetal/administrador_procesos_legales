@@ -58,11 +58,15 @@ export class AgregarCautelarComponent implements OnInit {
       this.form.controls['secuestro_info'].setValue(data['secuestro_info'])
     })
   }
+  volver(): void{
+    this.location.back()
+  }
+
   registrar():void{
     if (this.accion === 'actualizar') {
-      this.procesoService.actualizarCautelar(this.form.value, this.id).subscribe(data => console.log(data))
+      this.procesoService.actualizarCautelar(this.form.value, this.id).subscribe(data => this.volver())
     } else {
-      this.procesoService.agregarCautelar(this.form.value).subscribe(data => console.log(data))
+      this.procesoService.agregarCautelar(this.form.value).subscribe(data => this.volver())
     }
   }
 

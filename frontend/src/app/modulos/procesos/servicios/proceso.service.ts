@@ -143,8 +143,14 @@ export class ProcesoService {
     const ruta = `${this.urlActuaciones}${id}/`
     return this.http.put(ruta, actuacion)
   }
-  public listarActuaciones(proceso:number){
+  public iniciarListadoActuaciones(proceso:number){
     return this.http.get(`${this.urlActuaciones}${proceso}/listar_actuaciones`)
+  }
+  public obtenerActuaciones(urlPaginacion:any) {
+    return this.http.get(urlPaginacion);
+  }
+  public obtenerActuacion(id:number){
+    return this.http.get(`${this.urlActuaciones}${id}`)
   }
   public eliminarActuacion(id:number){
     return this.http.delete(`${this.urlActuaciones}${id}/`)
@@ -163,8 +169,14 @@ export class ProcesoService {
   public actualizarCautelar(cautelar:any, id:number){
     return this.http.put(`${this.urlCautelar}${id}/`, cautelar)
   }
-  public listarCautelares(proceso:number){
+  public iniciarListadoCautelares(proceso:number){
     return this.http.get(`${this.urlCautelar}${proceso}/listar_cautelares`)
+  }
+  public obtenerCautelares(urlPaginacion:any) {
+    return this.http.get(urlPaginacion);
+  }
+  public eliminarCautelar(id:number){
+    return this.http.delete(`${this.urlCautelar}${id}`)
   }
   public contarCautelares(proceso:number){
     return this.http.get(`${this.urlCautelar}${proceso}/contar_cautelares`)
@@ -176,20 +188,38 @@ export class ProcesoService {
   public mostrarNotificacion(id:number){
     return this.http.get(`${this.urlNotificacion}${id}/`)
   }
+  public eliminarNotificacion(id:number){
+    return this.http.delete(`${this.urlNotificacion}${id}/`)
+  }
   public agregarNotificacion(notificacion:any){
     return this.http.post(this.urlNotificacion, notificacion)
   }
   public actualizarNotificacion(notificacion:any, id:number){
     return this.http.put(`${this.urlNotificacion}${id}/`, notificacion)
   }
-  public listarNotificaciones(proceso:number){
+  public iniciarlistadoNotificaciones(proceso:number){
     return this.http.get(`${this.urlNotificacion}${proceso}/listar_notificaciones`)
+  }
+  public obtenerNotificaciones(urlPaginacion:any) {
+    return this.http.get(urlPaginacion);
   }
   public contarNotificaciones(proceso:number){
     return this.http.get(`${this.urlNotificacion}${proceso}/contar_notificaciones`)
   }
   public alertaNotificaciones(proceso:number){
     return this.http.get(`${this.urlNotificacion}${proceso}/alerta`)
+  }
+  public agregarPersonaNotificada(notificado:any){
+    return this.http.post(`http://127.0.0.1:8000/api/v1.0/procesos/personas_notificadas/`, notificado)
+  }
+  public eliminarPersonaNotificada(id:number){
+    return this.http.delete(`http://127.0.0.1:8000/api/v1.0/procesos/personas_notificadas/${id}`)
+  }
+  public agregarEmpresaNotificada(notificado:any){
+    return this.http.post(`http://127.0.0.1:8000/api/v1.0/procesos/empresas_notificadas/`, notificado)
+  }
+  public eliminarEmpresaNotificada(id:number){
+    return this.http.delete(`http://127.0.0.1:8000/api/v1.0/procesos/empresas_notificadas/${id}`)
   }
   /**
    * metodos para la API de archivos 
@@ -204,12 +234,19 @@ export class ProcesoService {
   public actualizarArchivo(archivo:any, id:number){
     return this.http.put(`${this.urlArchivos}${id}/`, archivo)
   }
-  public listarArchivos(proceso:number){
+  public iniciarListadoArchivos(proceso:number){
     return this.http.get(`${this.urlArchivos}${proceso}/listar_archivos`)
   }
   public contarArchivos(proceso:number){
     return this.http.get(`${this.urlArchivos}${proceso}/contar_archivos`)
   }
+  public obtenerArchivos(urlPaginacion:any){
+    return this.http.get(urlPaginacion);
+  }
+  public eliminarArchivo(id:number){
+    return this.http.delete(`${this.urlArchivos}${id}`)
+  }
+
   /**
    * consulatar despacho
    */

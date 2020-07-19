@@ -17,7 +17,7 @@ class ArchivoViewSet(viewsets.ModelViewSet):
                 "xltm", "xls", "xlt",
                 "xml", "xlw", "prn", "txt",
                 "ods", "pdf", "bmp", "gif",
-                "jpg", "pgn", "doc", "psd",
+                "jpg", "png", "doc", "psd",
                 "svg", "docm", "docx", "rtf"
                )
 

@@ -43,11 +43,13 @@ export class PartesComponent implements OnInit {
   }
 
   onChanges(): void {
+    this.inicializar()
+  }
+  private inicializar(){
     this.form.get('persona').valueChanges.subscribe(valor => {
       this.listarPersonas(valor)
     })
   }
-
   private listarPersonas(persona: string) {
     this.procesoService.listarPartesNaturales(persona).subscribe(data =>{
       this.personas = data
@@ -61,12 +63,15 @@ export class PartesComponent implements OnInit {
     })
     this.form.reset()
     this.recargar.emit()
+    this.form.controls['proceso'].setValue(this.proceso)
+    this.inicializar()
   }
 
   eliminar(id:number):void{
     this.procesoService.eliminarParteNatural(id).subscribe(data =>{
       console.log(data)
       this.recargar.emit()
+      this.inicializar()
     })
     
   }

@@ -78,11 +78,12 @@ class NotificacionViewSet(viewsets.ModelViewSet):
         check_permission = user.has_perm('ver',proceso)
         if check_permission:
             notificaciones = Notificacion.objects.filter(proceso = proceso.id).order_by('limite')
+            page = self.paginate_queryset(notificaciones)
             serializer_context = {'request': notificaciones}
             serializer = self.get_serializer(
-            notificaciones, many=True
-        )
-            return Response(serializer.data)
+            page, many=True
+            )
+            return self.get_paginated_response(serializer.data)
         else:
             return Response('tu no tienes permiso para ver los registros')
 
@@ -107,7 +108,7 @@ class NotificacionViewSet(viewsets.ModelViewSet):
         if check_permission:
             fechaHoy = date.today()
             fechaQuery = fechaHoy + timedelta(days=5) 
-            notificaciones = Notificacion.objects.filter(limite__gte = fechaHoy).filter(limite__lte = fechaQuery).count()
+            notificaciones = Notificacion.objects.filter(proceso = pk).filter(limite__gte = fechaHoy).filter(limite__lte = fechaQuery).count()
             return Response(notificaciones)
         else:
             return Response('tu no tienes permiso para ver los registros')

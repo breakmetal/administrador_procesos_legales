@@ -14,7 +14,7 @@
 // hue. Available color palettes: https://material.io/design/color/
 $frontend-primary: mat-palette($mat-deep-purple, 900);
 $frontend-accent: mat-palette($mat-light-blue, A200, A100, A700);
-
+$frontedn-success: mat-palette($mat-blue);
 // The warn palette is optional (defaults to red).
 $frontend-warn: mat-palette($mat-red);
 $background-color: map_get($mat-blue-grey, 50);

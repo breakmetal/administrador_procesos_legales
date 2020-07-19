@@ -1,18 +1,13 @@
-<!--<div class="container-flex">
- 
-  
-
-</div>-->
-
-
-<div class="container-flex">
-  <!--primera columna-->
-  <div class="cards">  
-    <mat-card  class="card">
-      <mat-card-header>
-        <mat-card-title>{{persona.nombre}} {{persona.apellido}}</mat-card-title>
-        <mat-card-subtitle><button color="primary"  routerLink="/dashboard/abogado/actualizar-persona/actualizar/{{persona.id}}" mat-button><mat-icon hr>create</mat-icon>Update</button></mat-card-subtitle>
-      </mat-card-header>
+    <mat-card>
+      <mat-card-title >
+        <mat-toolbar>
+          <span class="titulo">{{persona.nombre}} {{persona.apellido}}</span>
+        </mat-toolbar>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <button color="primary"  routerLink="/dashboard/abogado/actualizar-persona/actualizar/{{persona.id}}" mat-button>
+        <mat-icon hr>create</mat-icon>Update</button>
+      </mat-card-subtitle>
       <mat-card-content>
         <table mat-table [dataSource]="tabla" >     
   
@@ -30,18 +25,3 @@
         </table>
       </mat-card-content>
      </mat-card>
-  </div>
-  <!--segunda columna-->
-
-  <!--tercera columna-->
-  <div class="cards">  
-    <mat-card  class="card">
-      <mat-card-header>
-        <mat-card-title>Informacion de contacto</mat-card-title>
-        <mat-card-subtitle>Numeros y direcciones</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-  
-  
-  </div>
-</div>

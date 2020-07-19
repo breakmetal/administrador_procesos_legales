@@ -43,11 +43,13 @@ export class PartesJuridicasComponent implements OnInit {
   }
 
   onChanges(): void {
+    this.inicializar()
+  }
+  private inicializar(){
     this.form.get('empresa').valueChanges.subscribe(valor => {
       this.listarEmpresas(valor)
     })
   }
-
   private listarEmpresas(empresa: string) {
     this.procesoService.listarPartesJuridicas(empresa).subscribe(data =>{
       this.empresas = data
@@ -61,7 +63,8 @@ export class PartesJuridicasComponent implements OnInit {
       this.recargar.emit()
     })
     this.form.reset()
-    
+    this.form.controls['proceso'].setValue(this.proceso)
+    this.inicializar()
   }
 
   eliminar(id:number):void{
@@ -69,7 +72,7 @@ export class PartesJuridicasComponent implements OnInit {
       console.log(data)
       this.recargar.emit()
     })
-    
+    this.inicializar()
   }
 
 }

@@ -90,8 +90,12 @@ class CautelarViewSet(viewsets.ModelViewSet):
         check_permission = user.has_perm('ver',proceso)
         if check_permission:
             cautelares = Cautelar.objects.filter(proceso = proceso.id)
-            serializer = CautelarSerializer(cautelares, many=True)
-            return Response(serializer.data)
+            page = self.paginate_queryset(cautelares)
+            serializer_context = {'request': cautelares}
+            serializer = self.get_serializer(
+            page, many=True
+        )
+            return self.get_paginated_response(serializer.data)
         else:
             return Response('tu no tienes permiso para ver los registros')
 

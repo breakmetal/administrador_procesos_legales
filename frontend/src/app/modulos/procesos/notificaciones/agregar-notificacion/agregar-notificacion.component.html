@@ -1,4 +1,8 @@
-<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+    <div>
+      <span class="titulo">Datos generales</span>
+    </div>
     <mat-form-field appearance="outline">
         <mat-label>tipo</mat-label>
         <input formControlName='tipo' matInput>
@@ -37,7 +41,9 @@
     <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
         <mat-icon>send</mat-icon>enviar
     </button>
-    <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
+    <a color="warn" (click)="volver()"  mat-raised-button>
         <mat-icon>cancelar</mat-icon>cancelar
     </a>
-</form>
+  </form>
+
+</mat-card>

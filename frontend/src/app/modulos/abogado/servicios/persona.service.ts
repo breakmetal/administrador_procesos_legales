@@ -50,5 +50,10 @@ export class PersonaService {
     const ruta = `${this.url}${id}/`
     return this.http.patch(ruta,info)
   }
+
+  public prueba(){
+    const ruta = `${this.url}lista_prueba`
+    return this.http.get(ruta)
+  }
   
 }

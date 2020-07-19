@@ -52,7 +52,10 @@ export class AgregarEjecutivoComponent implements OnInit {
     }
     console.log(this.form.value)
   }
-  
+  volver(): void{
+    this.location.back()
+  }
+
   public registrar():void {
     if (this.accion === 'actualizar') {
       this.procesoService.actualizarEjecutivo(this.id, this.form.value).subscribe(data => console.log(data))
@@ -62,7 +65,6 @@ export class AgregarEjecutivoComponent implements OnInit {
       this.procesoService.agregarEjecutivo(this.form.value).subscribe(data => console.log(data))
     }
     this.location.back()
-    //http://localhost:4200/dashboard/proceso/agregar-ejecutivo/agregar/6
   }
   private inicializar():void{
     

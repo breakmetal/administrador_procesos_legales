@@ -33,6 +33,7 @@ export class ListarPersonasComponent implements OnInit {
   next : number;
   previous : number;
   pageIndex : number;
+  prueba : any;
   constructor(private listar:ListarPersonasService, private personaService:PersonaService, public dialog: MatDialog,private _snackBar: MatSnackBar) { }
 
   
@@ -57,6 +58,7 @@ export class ListarPersonasComponent implements OnInit {
       this.pageIndex = 0;      
     }); 
   }
+
   /**
    * obtener listadoPersonas
    */

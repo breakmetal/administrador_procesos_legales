@@ -75,13 +75,16 @@ export class AgregarNotificacionComponent implements OnInit {
       this.form.controls['limite'].setValue(data['limite'])
     })
   }
+  volver(): void{
+    this.location.back()
+  }
   registrar():void{
     let dataParse = this.formatDate(this.form.value.limite)
     this.form.value.limite = dataParse
     if (this.accion === 'actualizar') {
-      this.procesoService.actualizarNotificacion(this.form.value, this.id).subscribe(data => console.log(data))
+      this.procesoService.actualizarNotificacion(this.form.value, this.id).subscribe(data => this.volver())
     } else {
-      this.procesoService.agregarNotificacion(this.form.value).subscribe(data => console.log(data))
+      this.procesoService.agregarNotificacion(this.form.value).subscribe(data => this.volver())
     }
   }
 }

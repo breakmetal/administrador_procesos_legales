@@ -69,12 +69,19 @@ export class AgregarActuacionComponent implements OnInit {
       
     })
   }
+
+  volver(): void{
+    this.location.back()
+  }
+
+
   registrar():void{
     if (this.accion === 'actualizar') {
       this.procesoService.actualizarActuacion(this.form.value, this.id).subscribe(data => console.log(data))
     } else {
-      this.procesoService.agregarActuacion(this.form.value).subscribe(data => console.log(data))
+      this.procesoService.agregarActuacion(this.form.value).subscribe(data => this.volver())
     }
+    
   }
 
 }

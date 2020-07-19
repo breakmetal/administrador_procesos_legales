@@ -1,5 +1,8 @@
-
+<mat-card>
 <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+  <div>
+    <span class="titulo">Datos generales</span>
+  </div>
   <mat-form-field appearance="outline">
     <mat-label>Actuacion</mat-label>
     <input formControlName='actuacion' matInput>
@@ -10,7 +13,7 @@
       <strong>los caracteres especiales no estan permitidos</strong>
     </mat-error>
   </mat-form-field>
-  <br>
+  
   <mat-form-field appearance="outline">
       <mat-label>Anotacion</mat-label>
       <input formControlName='anotacion' matInput>
@@ -25,7 +28,6 @@
   <mat-form-field appearance="outline">
     <input  matInput type="datetime-local"  formControlName='inicio'>
   </mat-form-field>
-  <br>
   <mat-form-field appearance="outline">
     <input  matInput type="datetime-local"  formControlName='termino'>
   </mat-form-field>
@@ -34,11 +36,13 @@
     <input  matInput type="datetime-local"  formControlName='registro'>
   </mat-form-field>
   <br>  
-  <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
+  <div>
+    <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
       <mat-icon>send</mat-icon>enviar
   </button>
-  <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
+  <a color="warn" (click)="volver()" mat-raised-button>
       <mat-icon>cancelar</mat-icon>cancelar
   </a>
+  </div>
 </form>
-
+</mat-card>

@@ -60,7 +60,7 @@
       <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
         <mat-icon>send</mat-icon>enviar
       </button>
-      <a color="warn" routerLink="/dashboard/proceso/listar-procesos"  mat-raised-button>
+      <a color="warn" (click)="volver()"  mat-raised-button>
         <mat-icon>cancelar</mat-icon>cancelar
       </a>
 </form>

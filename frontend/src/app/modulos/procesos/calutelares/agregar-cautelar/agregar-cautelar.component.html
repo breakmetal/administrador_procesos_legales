@@ -1,5 +1,8 @@
-
-<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+    <div>
+      <span class="titulo">Agregar Cautelar</span>
+    </div>
     <mat-form-field appearance="outline">
       <mat-label>Clase</mat-label>
       <select matNativeControl formControlName="clase" required>
@@ -27,6 +30,7 @@
         </mat-error>
       </mat-form-field>
     <br>
+
     <mat-form-field appearance="outline">
         <mat-label>secuestro_info</mat-label>
         <input formControlName='secuestro_info' matInput>
@@ -38,10 +42,10 @@
     <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
         <mat-icon>send</mat-icon>enviar
     </button>
-    <a color="warn" routerLink="/dashboard/abogado/listar-personas"  mat-raised-button>
+    <a color="warn" (click)="volver()" mat-raised-button>
         <mat-icon>cancelar</mat-icon>cancelar
     </a>
   </form>
-  
+</mat-card>
   
 <!--http://localhost:4200/dashboard/proceso/actualizar-cautelar/agregar/7-->
