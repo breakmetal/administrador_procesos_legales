@@ -60,11 +60,12 @@ export class PartesComponent implements OnInit {
   public registrar():void{
     this.procesoService.agregarParteNatural(this.form.value).subscribe(data =>{
       console.log(data)
+      this.inicializar()
     })
     this.form.reset()
     this.recargar.emit()
     this.form.controls['proceso'].setValue(this.proceso)
-    this.inicializar()
+
   }
 
   eliminar(id:number):void{

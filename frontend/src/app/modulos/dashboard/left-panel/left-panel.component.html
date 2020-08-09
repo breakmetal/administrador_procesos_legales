@@ -1,8 +1,27 @@
 <mat-list>
-    <mat-list-item> <mat-icon >folder_shared</mat-icon>Agenda</mat-list-item>
+    <mat-list-item>
+        <a  mat-button routerLink="/dashboard/proceso/todas-notificaciones">
+            <button color="accent" mat-button>Notificaciones</button>
+        </a>
+    </mat-list-item>
     <mat-divider></mat-divider>
-        <mat-list-item>-Personas</mat-list-item>
-        <mat-list-item>-Empresas</mat-list-item>
+    <mat-list-item>
+        <a  mat-button routerLink="/dashboard/abogado/listar-empresas">
+            <button  mat-button  color="accent">Empresas</button>
+        </a>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <a  mat-button routerLink="/dashboard/abogado/listar-personas">
+            <button  mat-button  color="accent">Personas</button>
+        </a>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <a  mat-button routerLink="/dashboard/proceso/listar-procesos">
+            <button  mat-button  color="accent">Procesos</button>
+        </a>
+    </mat-list-item>
     <mat-divider></mat-divider>
     
   </mat-list>

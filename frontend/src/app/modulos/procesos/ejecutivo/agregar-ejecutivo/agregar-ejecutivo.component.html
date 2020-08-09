@@ -1,4 +1,5 @@
-<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
     <mat-form-field appearance="outline">
         <mat-label>Titulo</mat-label>
         <select matNativeControl formControlName="titulo" required>
@@ -64,3 +65,5 @@
         <mat-icon>cancelar</mat-icon>cancelar
       </a>
 </form>
+
+</mat-card>

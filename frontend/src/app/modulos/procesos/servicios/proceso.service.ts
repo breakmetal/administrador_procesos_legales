@@ -185,6 +185,9 @@ export class ProcesoService {
   /**
    * metodos para la API de notificaciones
    */
+  public todasNotificaciones(){
+    return this.http.get(`${this.urlNotificacion}todasNotificaciones/`)
+  }
   public mostrarNotificacion(id:number){
     return this.http.get(`${this.urlNotificacion}${id}/`)
   }

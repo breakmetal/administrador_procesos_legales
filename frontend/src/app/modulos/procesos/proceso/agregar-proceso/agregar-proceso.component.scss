@@ -1,0 +1,29 @@
+.mat-card{
+    width: 40%;
+    position: relative;
+    left: 30%;
+    display: flex;
+    flex-direction:row;
+    justify-content:space-around;
+}
+.titulo {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+div {
+    text-align: center;
+    width: 100%;
+}
+#despacho{
+    width: 100%;
+}
+
+@media screen and (max-width: 550px) {
+    .mat-card{
+        width: 80%;
+        left: 5%;
+    }
+    .mat-form-field{
+        width: 100%;
+    }
+}

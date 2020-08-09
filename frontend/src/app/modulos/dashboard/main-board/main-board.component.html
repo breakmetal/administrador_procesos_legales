@@ -5,7 +5,7 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="salir()">
             <mat-icon>login</mat-icon>
             <span>salir</span>
           </button>
@@ -16,10 +16,10 @@
     </mat-menu>
     
 </mat-toolbar>
-<mat-drawer-container class="board-container" fixedInViewport >
-    <mat-drawer #drawer class="board-sidenav" mode="side">
+<mat-sidenav-container class="board-container" >
+    <mat-sidenav #drawer class="board-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <app-left-panel></app-left-panel>
-    </mat-drawer>
+    </mat-sidenav>
     <router-outlet></router-outlet>
 
-</mat-drawer-container>
+</mat-sidenav-container>

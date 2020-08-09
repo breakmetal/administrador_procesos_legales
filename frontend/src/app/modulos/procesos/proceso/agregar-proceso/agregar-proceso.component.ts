@@ -79,6 +79,7 @@ export class AgregarProcesoComponent implements OnInit {
     })
   }
 
+
   private formatDate(date):any {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -108,7 +109,7 @@ export class AgregarProcesoComponent implements OnInit {
     }else{
       this.procesoService.agregarProcesos(this.form.value).subscribe(proceso => this.location.back())
     }
-    this.location.back()
+    
   }
 
   private inicializar():void{

@@ -46,6 +46,7 @@ import { MostrarActuacionComponent } from './actuaciones/mostrar-actuacion/mostr
 import { ListarArchivosComponent } from './archivos/listar-archivos/listar-archivos.component';
 import { ArchivoNombrePipe } from './pipes/archivo-nombre.pipe';
 import { MostrarCautelarComponent } from './calutelares/mostrar-cautelar/mostrar-cautelar.component';
+import { TodasMisNotificacionesComponent } from './todas-mis-notificaciones/todas-mis-notificaciones.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { MostrarCautelarComponent } from './calutelares/mostrar-cautelar/mostrar
     MostrarActuacionComponent,
     ListarArchivosComponent,
     ArchivoNombrePipe,
-    MostrarCautelarComponent
+    MostrarCautelarComponent,
+    TodasMisNotificacionesComponent
   ],
   imports: [
     CommonModule,

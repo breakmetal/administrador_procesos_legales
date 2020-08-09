@@ -6,13 +6,16 @@ from ...abogado.models.empresa import Empresa
 from .proceso import Proceso
 
 class Notificacion(models.Model):
-    proceso = models.ForeignKey(Proceso, on_delete=models.CASCADE, blank=False, null=True)
+    proceso = models.ForeignKey(Proceso, related_name='notificaciones',on_delete=models.CASCADE, blank=False, null=True)
     tipo = models.CharField(max_length = 60, null = False, blank = False)
     mensaje = models.CharField(max_length = 100, null = False, blank = False)
     expedicion = models.DateTimeField( null = False )
     limite = models.DateField( null = False )
 
-
+    class Meta:
+        permissions = (
+            ('verNotificaciones', 'permite listas las notificaciones'),
+        )
 
     def fecha_limite(self, fecha, dias):
         """ Esta funcion calcular la fecha limite solo teniendo en cuenta los dias laborales para hacer efectiva la notificacion  """

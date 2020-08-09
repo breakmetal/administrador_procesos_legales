@@ -1,4 +1,10 @@
-<table mat-table [dataSource]="proceso" class="mat-elevation-z8">
+<mat-card>
+  <mat-card-title >
+    <mat-toolbar>
+      <span class="titulo">Procesos</span>
+    </mat-toolbar>
+  </mat-card-title>
+  <table mat-table [dataSource]="proceso" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -17,7 +23,7 @@
   
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef>
-        <a routerLink="/dashboard/proceso/agregar-proceso/crear"  mat-icon-button color="primary">
+        <a routerLink="/dashboard/proceso/agregar-proceso/crear"  mat-icon-button color="accent">
           <mat-icon hr>person_add</mat-icon>
         </a>
       </th>
@@ -25,8 +31,8 @@
         <button  mat-icon-button color="warn" (click)="confirmDialog(element)">
           <mat-icon>delete_forever</mat-icon>
         </button>
-        <a routerLink="/dashboard/proceso/mostrar-proceso/{{element.id}}" mat-icon-button color="primary">
-          <mat-icon>face</mat-icon>
+        <a routerLink="/dashboard/proceso/mostrar-proceso/{{element.id}}" mat-icon-button color="accent">
+          <mat-icon>gavel</mat-icon>
         </a>
       </td>
     </ng-container>
@@ -40,3 +46,4 @@
     >
     </mat-paginator>
   
+</mat-card>

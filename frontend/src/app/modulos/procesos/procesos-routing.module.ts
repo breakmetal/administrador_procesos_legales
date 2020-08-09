@@ -15,6 +15,7 @@ import { MostrarActuacionComponent } from "./actuaciones/mostrar-actuacion/mostr
 import { ListarArchivosComponent } from "./archivos/listar-archivos/listar-archivos.component";
 import { ListarCautelarComponent } from './calutelares/listar-cautelar/listar-cautelar.component';
 import { MostrarCautelarComponent } from './calutelares/mostrar-cautelar/mostrar-cautelar.component';
+import { TodasMisNotificacionesComponent } from "./todas-mis-notificaciones/todas-mis-notificaciones.component";
 
 const routes: Routes = [
   {
@@ -100,6 +101,10 @@ const routes: Routes = [
   {
     path: 'mostrar-notificacion/:id',
     component: MostrarNotificacionComponent,
+  },
+  {
+    path: 'todas-notificaciones',
+    component: TodasMisNotificacionesComponent,
   },
   /**
    * archivos

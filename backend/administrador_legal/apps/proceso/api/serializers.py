@@ -110,3 +110,13 @@ class NotificacionSerializer(serializers.ModelSerializer):
         model = Notificacion
         fields = '__all__'
 
+class IdsNotificacionesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Notificacion
+        fields=['id', 'proceso', 'tipo', 'limite']
+
+class TodasNotificacionesSerializers(serializers.ModelSerializer):
+    notificaciones = IdsNotificacionesSerializers(many=True, read_only=True)
+    class Meta:
+        model=Proceso
+        fields= ['id','numero_proceso', 'notificaciones']

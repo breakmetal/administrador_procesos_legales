@@ -10,11 +10,21 @@ class ParteNViewSet(viewsets.ModelViewSet):
     queryset = Partesn.objects.all()
     serializer_class = PartesNSerializer
 
+    def confirmarParte(self, id):
+        try:
+            Partesn.objects.get(persona = id)
+            return False
+        except:
+            return True
+
+
     def create(self, request, *args, **kwargs):
         instance = request.data
         user = self.request.user
         proceso = Proceso.objects.get(id = instance["proceso"])
-        if proceso.user.id == request.user.id:
+        dato = instance['persona']
+        estaRegistrado = self.confirmarParte(dato)
+        if proceso.user.id == request.user.id and estaRegistrado:
             serializer = PartesNSerializer(data=instance)
             serializer.is_valid(raise_exception=True)
             parte = serializer.save()
@@ -71,4 +81,6 @@ class ParteNViewSet(viewsets.ModelViewSet):
                 return Response({"mensaje":"tu no tienes permiso"})
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+    
         

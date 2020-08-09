@@ -1,86 +1,95 @@
-<form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
-    <mat-form-field appearance="outline">
-        <mat-label>Numero de proceso</mat-label>
-        <input formControlName='numero_proceso' matInput>
-        <mat-error *ngIf="form.get('numero_proceso').hasError('required')">
-          <strong>Este campo es obligatorio</strong>
-        </mat-error>
-        <mat-error *ngIf="form.get('numero_proceso').hasError('pattern')">
-          <strong>Solo numeros</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>tipo</mat-label>
-        <input formControlName='tipo' matInput>
-        <mat-error *ngIf="form.get('tipo').hasError('required')">
-          <strong>Este campo es obligatorio</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <input type="text"
-               placeholder="Despachos"
-               aria-label="Number"
-               matInput
-               formControlName = "despacho"
-               [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of despachos" [value]="option.id">
-            {{option.despacho}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+<mat-card>
 
-      <br>
+    
+
+    <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
       <mat-form-field appearance="outline">
-        <mat-label>estado</mat-label>
-        <input formControlName='estado' matInput>
-        <mat-error *ngIf="form.get('estado').hasError('required')">
-          <strong>Este campo es obligatorio</strong>
-        </mat-error>
-        <mat-error *ngIf="form.get('estado').hasError('required')">
-          <strong>Solo numeros</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Litisconsorcio</mat-label>
-        <select matNativeControl formControlName="litisconsorcio" required>
-          <option value="NECESARIO">Necesario</option>
-          <option value="FACULTATIVO">Facultativo</option>
-          <option value="CUASI-NECESARIO">Cuasi necesario</option>
-          <option value="NO-APLICA">NO aplica</option>
-        </select>
-        <mat-error *ngIf="form.get('descripcion').hasError('required')">
-          <strong>Este campo es obligatorio</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <mat-label>Descripcion</mat-label>
-          <input formControlName='descripcion' matInput>
-        <mat-error *ngIf="form.get('descripcion').hasError('required')">
-          <strong>Este campo es obligatorio</strong>
-        </mat-error>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <input matInput type="datetime-local" name='fecha_providencia' formControlName='fecha_providencia'>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <input matInput type="datetime-local"  formControlName='fecha_publicacion'>
-      </mat-form-field>
-      <br>
-      <mat-form-field appearance="outline">
-        <input matInput type="datetime-local"  formControlName='fecha_finalizacion'>
-      </mat-form-field>
-      <br>
-      <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
-        <mat-icon>send</mat-icon>enviar
-      </button>
-      <a color="warn" routerLink="/dashboard/proceso/listar-procesos"  mat-raised-button>
-        <mat-icon>cancelar</mat-icon>cancelar
-      </a>
-</form>
+          <mat-label>Numero de proceso</mat-label>
+          <input formControlName='numero_proceso' matInput>
+          <mat-error *ngIf="form.get('numero_proceso').hasError('required')">
+            <strong>Este campo es obligatorio</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('numero_proceso').hasError('pattern')">
+            <strong>Solo numeros</strong>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>tipo</mat-label>
+          <input formControlName='tipo' matInput>
+          <mat-error *ngIf="form.get('tipo').hasError('required')">
+            <strong>Este campo es obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field id="despacho" appearance="outline">
+          <input type="text"
+                placeholder="Despachos"
+                aria-label="Number"
+                matInput
+                formControlName = "despacho"
+                [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of despachos"  [value]="option.id" >
+              {{option.despacho}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field><br>
+  
+        
+        <mat-form-field appearance="outline">
+          <mat-label>estado</mat-label>
+          <input formControlName='estado' matInput>
+          <mat-error *ngIf="form.get('estado').hasError('required')">
+            <strong>Este campo es obligatorio</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('estado').hasError('required')">
+            <strong>Solo numeros</strong>
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Litisconsorcio</mat-label>
+          <select matNativeControl formControlName="litisconsorcio" required>
+            <option value="NECESARIO">Necesario</option>
+            <option value="FACULTATIVO">Facultativo</option>
+            <option value="CUASI-NECESARIO">Cuasi necesario</option>
+            <option value="NO-APLICA">NO aplica</option>
+          </select>
+          <mat-error *ngIf="form.get('descripcion').hasError('required')">
+            <strong>Este campo es obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline">
+          <mat-label>Descripcion</mat-label>
+            <input formControlName='descripcion' matInput>
+          <mat-error *ngIf="form.get('descripcion').hasError('required')">
+            <strong>Este campo es obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Providencia</mat-label>
+          <input matInput type="datetime-local" name='fecha_providencia' formControlName='fecha_providencia'>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline">
+          <mat-label>Publicación</mat-label>
+          <input matInput type="datetime-local"  formControlName='fecha_publicacion'>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Finalización</mat-label>
+          <input matInput type="datetime-local"  formControlName='fecha_finalizacion'>
+        </mat-form-field>
+        <br>
+        <button type="submit" color="primary" [disabled]="form.invalid"  mat-raised-button>
+          <mat-icon>send</mat-icon>enviar
+        </button>
+        <a color="warn" routerLink="/dashboard/proceso/listar-procesos"  mat-raised-button>
+          <mat-icon>cancelar</mat-icon>cancelar
+        </a>
+  </form>
+
+</mat-card>

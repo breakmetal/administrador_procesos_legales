@@ -26,7 +26,7 @@ export class LoginService {
     return this.http.post('http://127.0.0.1:8000/api/token/', JSON.stringify(user), this.httpOptions).subscribe(
       res => {
         this.almacenarCredenciales(res, user);
-        console.log(res);       
+        window.location.href = "http://localhost:4200/dashboard/proceso/todas-notificaciones";
       }
     );     
   }
@@ -38,14 +38,6 @@ export class LoginService {
     localStorage.setItem("username", usuario['username'])
   }
 
-  /*refreshAccessToken() {
-    return this.http.post('http://127.0.0.1:8000/api/token/refresh/', { refresh : this.getRefreshToken() }, this.httpOptions).subscribe(
-      res => {
-        this.setNewAccessToken(res['access']);
-        console.log(res);   
-      }
-    );     
-  }*/
   refreshAccessToken() {
     return this.http.post('http://127.0.0.1:8000/api/token/refresh/', { refresh : this.getRefreshToken() }).pipe(
       map((res:Response) => {
@@ -64,69 +56,16 @@ export class LoginService {
   public getRefreshToken() {
     return localStorage.getItem('refresh');
   }
-  /*refreshAccessToken() {
-    return this.http.post('http://127.0.0.1:8000/api/token/refresh/', { refresh : this.getRefreshToken() }, this.httpOptions).pipe(
-      map(token => {
-        this.setNewAccessToken(token['access'])
-        console.log(token)
-      })
-    )
-         
+
+  isLoggedIn() {
+    return !!this.getRefreshToken();
   }
 
-  
-  /*login(user:object) {
-    return this.http.post('http://127.0.0.1:8000/api/token/', JSON.stringify(user), this.httpOptions).subscribe(
-      res => {
-        this.tokens(res, user);
-        console.log(res);
-
-        
-      }
-    );     
-  }
-  /*refreshAccessToken() {
-    return this.http.post('http://127.0.0.1:8000/api/token/refresh/', { refresh : this.getRefreshToken() }, this.httpOptions).subscribe(
-      res => {
-        this.setNewAccessToken(res['access']);
-        console.log(res);   
-      }
-    );     
-  }*/
-
- 
- 
-  /**
-   * Esta funcion permite crear variables de sesion para guardar los tokens
-  
-  public tokens(data:any, user:object) {
-    localStorage.setItem("access", data['access']);
-    localStorage.setItem("refresh", data['refresh']);
-    localStorage.setItem("username", user['username'])
-  }*/
-
-  /**
-   * get_token, permite recuperar el token almacenado en el localStore
-   */
-  /*public get_token() {
-    return localStorage.getItem('access');
-  }
-  public setNewAccessToken(token:string){
-    localStorage.setItem("access", token);
-  }
-  public getRefreshToken() {
-    return localStorage.getItem('refresh');
-  }
-  
-  login(usuario:object): Observable<boolean> {
-    return this.http.post<any>('http://127.0.0.1:8000/api/token/', JSON.stringify(usuario))
-      .pipe(
-        tap(tokens => this.almacenarUsuario(tokens, usuario),
-            error => console.log(error),
-            () => console.log("loggin correcto")
-        ))
+  logout() {
+    localStorage.removeItem('access')
+    localStorage.removeItem('refresh')
+    window.location.href = "http://localhost:4200/";
   }
 
-  */
 
 }

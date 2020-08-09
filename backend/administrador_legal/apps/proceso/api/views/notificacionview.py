@@ -1,6 +1,6 @@
 from ...models import Notificacion, Proceso
 from rest_framework import viewsets
-from ..serializers import NotificacionSerializer
+from ..serializers import NotificacionSerializer, IdsNotificacionesSerializers, TodasNotificacionesSerializers
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -21,7 +21,8 @@ class NotificacionViewSet(viewsets.ModelViewSet):
         if check_permission or proceso.user == user.id:
             serializer = NotificacionSerializer(data=instance)
             serializer.is_valid(raise_exception=True)
-            actuacion = serializer.save()
+            notificacion = serializer.save()
+            assign_perm("verNotificaciones", request.user, notificacion)
             return Response({"mensaje": "se agrego una notificacion"})
         else:
             return Response({"mensaje": "no tienes permiso"})
@@ -112,3 +113,17 @@ class NotificacionViewSet(viewsets.ModelViewSet):
             return Response(notificaciones)
         else:
             return Response('tu no tienes permiso para ver los registros')
+
+
+    @action(detail=False, methods=['get'])
+    def todasNotificaciones(self, request):
+        user = self.request.user
+        fechaHoy = date.today()
+        notificaciones = get_objects_for_user(user, 'verNotificaciones', klass=Notificacion).filter(limite__gte = fechaHoy).order_by('limite')
+        page = self.paginate_queryset(notificaciones)
+        serializer_context = {'request': notificaciones}
+        serializer = IdsNotificacionesSerializers(
+            page, many=True
+        )
+        return self.get_paginated_response(serializer.data)
+        

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmpresaService } from "../../servicios/empresa.service";
+import { Location } from '@angular/common';
+
 
 
 export interface Empresa{
@@ -24,10 +26,13 @@ export class MostrarEmpresaComponent implements OnInit {
   contactoColumnas: string[] = ['numero', 'ubicacion', 'acciones'];
   empresa: any;
   tabla: any;
-  constructor(private route: ActivatedRoute, private empresaService: EmpresaService) { }
+  constructor(private location: Location, private route: ActivatedRoute, private empresaService: EmpresaService) { }
 
   ngOnInit(): void {
     this.obtenerEmpresa()
+  }
+  volver(): void{
+    this.location.back()
   }
   obtenerEmpresa(): void {
     const id = +this.route.snapshot.paramMap.get('id')

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PersonaService } from '../../servicios/persona.service';
-
+import { Location } from '@angular/common';
 
 export interface Persona {
   documento : string,
@@ -22,7 +22,7 @@ export class MostrarPersonaComponent implements OnInit {
   contactoColumnas: string[] = ['numero', 'ubicacion', 'acciones'];
   persona : any;
   tabla : any;
-  constructor(private route: ActivatedRoute, private personaService: PersonaService) { }
+  constructor(private location: Location,private route: ActivatedRoute, private personaService: PersonaService) { }
 
   ngOnInit(): void {
     this.obtenerPersona()
@@ -36,6 +36,9 @@ export class MostrarPersonaComponent implements OnInit {
       console.log(data)
       console.log(this.tabla)
     })
+  }
+  volver(): void{
+    this.location.back()
   }
 
   crearFilasTabla(persona:object): Object[]{
