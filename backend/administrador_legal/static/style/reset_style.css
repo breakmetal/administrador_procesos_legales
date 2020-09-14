@@ -1,0 +1,11 @@
+body{
+    background-color: #B3E5FC;
+}
+.formulario{
+    display: flexbox;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    position: relative;
+    left: 30%;
+}

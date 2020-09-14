@@ -25,5 +25,14 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-toolbar>
+      <span class="titulo">Procesos</span>
+    </mat-toolbar>
+    <div *ngFor="let proceso of procesos" class="titulo">
+      <a routerLink="/dashboard/proceso/mostrar-proceso/{{proceso.proceso}}"  mat-icon-button color="accent">
+        <mat-icon hr>gavel</mat-icon>
+      </a>
+      <p>{{proceso.rol}}</p>
+    </div>
   </mat-card-content>
 </mat-card>

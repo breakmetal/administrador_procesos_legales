@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { ListarPersonasService } from "../../servicios/listar-personas.service";
 import { ConfirmDialogComponent } from "../../../compartidos/confirm-dialog/confirm-dialog.component";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { PersonaService } from '../../servicios/persona.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -34,6 +35,16 @@ export class ListarPersonasComponent implements OnInit {
   previous : number;
   pageIndex : number;
   prueba : any;
+  nombre = new FormGroup({
+    nombre : new FormControl('', [
+      Validators.pattern('^[0-9]+$')
+    ]),
+  })
+  documento = new FormGroup({
+    documento : new FormControl('', [
+      Validators.pattern('^[0-9]+$')
+    ]),
+  })
   constructor(private listar:ListarPersonasService, private personaService:PersonaService, public dialog: MatDialog,private _snackBar: MatSnackBar) { }
 
   
@@ -107,5 +118,40 @@ export class ListarPersonasComponent implements OnInit {
     });
   }
 
+  buscarNombre(){
+    this.documento.controls['documento'].setValue('')
+    this.paginator.pageIndex=0
+    if (this.nombre.get('nombre').value != "") {
+      this.personaService.buscarNombre(this.nombre.get('nombre').value).subscribe(data =>{
+        this.persona = data['results'];
+        this.count = data['count'];
+        this.next = data['next'];
+        this.previous = data['previous'];
+        this.pageIndex = 0;
+        console.log(data)
+      })
+    } else {
+      this.listadoInicial()
+      console.log('por aqui pase')
+    }
+  }
+
+  buscarDocumento(){
+    this.nombre.controls['nombre'].setValue('')
+    this.paginator.pageIndex=0
+    if (this.documento.get('documento').value != "") {
+      this.personaService.buscarDocumento(this.documento.get('documento').value).subscribe(data =>{
+        this.persona = data['results'];
+        this.count = data['count'];
+        this.next = data['next'];
+        this.previous = data['previous'];
+        this.pageIndex = 0;
+        console.log(data)
+      })
+    } else {
+      this.listadoInicial()
+    }
+  }
+  
   
 }

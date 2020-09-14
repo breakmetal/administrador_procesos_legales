@@ -4,7 +4,7 @@ import {  throwError, Observable } from 'rxjs';
 import {Router} from '@angular/router';
 import { catchError, mapTo, tap, map } from 'rxjs/operators';
 import { strict } from 'assert';
-
+import {FormGroup, FormControl} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,11 @@ export class LoginService {
     };
   }
 
-  login(user:object) {
-    return this.http.post('http://127.0.0.1:8000/api/token/', JSON.stringify(user), this.httpOptions).subscribe(
+  login(user:any) {
+    return this.http.post('http://127.0.0.1:8000/api/token/', JSON.stringify(user.value), this.httpOptions).subscribe(
       res => {
         this.almacenarCredenciales(res, user);
-        window.location.href = "http://localhost:4200/dashboard/proceso/todas-notificaciones";
+        this.router.navigateByUrl('dashboard/proceso/todas-notificaciones')
       }
     );     
   }
@@ -64,7 +64,7 @@ export class LoginService {
   logout() {
     localStorage.removeItem('access')
     localStorage.removeItem('refresh')
-    window.location.href = "http://localhost:4200/";
+    this.router.navigateByUrl('')
   }
 
 

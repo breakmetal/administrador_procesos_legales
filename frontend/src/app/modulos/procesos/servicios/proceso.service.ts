@@ -58,6 +58,14 @@ export class ProcesoService {
     return this.http.get(this.url);
   }
 
+  /**
+   * listrarProcesoId
+   */
+  public listarProcesosId(numero_proceso:number) {
+    let urlProcesos = `${this.url}?numero_proceso=${numero_proceso}`
+    return this.http.get(urlProcesos);
+  }
+
   public actualizarProceso(id:number, proceso:Proceso){
     const ruta = `${this.url}${id}/`
     return this.http.put(ruta, proceso);

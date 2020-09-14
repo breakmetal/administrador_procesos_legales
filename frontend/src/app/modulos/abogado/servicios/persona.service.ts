@@ -55,5 +55,24 @@ export class PersonaService {
     const ruta = `${this.url}lista_prueba`
     return this.http.get(ruta)
   }
+
+  public listarProcesos(id:number){
+    const ruta = `http://127.0.0.1:8000/api/v1.0/procesos/partes_naturales/${id}/listar_procesos_persona/`
+    return this.http.get(ruta)
+  }
   
+  public buscarNombre(nombre:string){
+    let ruta = `http://127.0.0.1:8000/api/v1.0/abogado/personas/?nombre=${nombre}`;
+    return this.http.get(ruta)
+  }
+
+  public buscarDocumento(documento:string){
+    let ruta = `http://127.0.0.1:8000/api/v1.0/abogado/personas/?documento=${documento}`;
+    return this.http.get(ruta)
+  }
+
+  public listar_procesos_personas(id:number){
+    let ruta = `http://127.0.0.1:8000/api/v1.0/procesos/procesos/${id}/listar_procesos_personas/`
+    return this.http.get(ruta)
+  }
 }

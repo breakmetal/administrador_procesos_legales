@@ -13,9 +13,7 @@ div {
 input#input{
     display: none;
 }
-label#label{
-    /* Customize your label here */
-}
+
 @media screen and (max-width: 550px) {
     .mat-card{
         width: 80%;

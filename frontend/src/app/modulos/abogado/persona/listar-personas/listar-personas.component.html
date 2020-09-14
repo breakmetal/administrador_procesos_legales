@@ -4,46 +4,62 @@
       <span class="titulo">Personas</span>
     </mat-toolbar>
   </mat-card-title>
-  <table mat-table [dataSource]="persona" class="mat-elevation-z8">
+  <mat-card-content>
+    <mat-toolbar>
+      <form [formGroup]="nombre" (ngSubmit)="buscarNombre()" novalidate>
+        <mat-form-field >
+        <mat-label>Nombre</mat-label>
+          <input formControlName='nombre'  matInput>
+        </mat-form-field>
+      </form>
+      <span class="titulo"></span>
+      <form [formGroup]="documento" (ngSubmit)="buscarDocumento()" novalidate>
+        <mat-form-field>
+        <mat-label>ID</mat-label>
+          <input formControlName='documento'  matInput>
+        </mat-form-field>
+      </form>
+    </mat-toolbar>
+    <table mat-table [dataSource]="persona" class="mat-elevation-z8">
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="documento">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombre}} {{element.apellido}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef>
-        <a routerLink="/dashboard/abogado/agregar-personas/crear"  mat-icon-button color="accent">
-          <mat-icon hr>person_add</mat-icon>
-        </a>
-      </th>
-      <td mat-cell *matCellDef="let element">  
-        <button  mat-icon-button color="warn" (click)="confirmDialog(element)">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-        <a routerLink="/dashboard/abogado/mostrar-persona/{{element.id}}" mat-icon-button color="accent">
-          <mat-icon>face</mat-icon>
-        </a>
-      </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-    <mat-paginator  [length]="count"
-                    [pageSize]="5"
-    >
-    </mat-paginator>
-  
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+    
+      <!-- Position Column -->
+      <ng-container matColumnDef="documento">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} {{element.apellido}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>
+          <a routerLink="/dashboard/abogado/agregar-personas/crear"  mat-icon-button color="accent">
+            <mat-icon hr>person_add</mat-icon>
+          </a>
+        </th>
+        <td mat-cell *matCellDef="let element">  
+          <button  mat-icon-button color="warn" (click)="confirmDialog(element)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+          <a routerLink="/dashboard/abogado/mostrar-persona/{{element.id}}" mat-icon-button color="accent">
+            <mat-icon>face</mat-icon>
+          </a>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+      <mat-paginator  [length]="count"
+                      [pageSize]="5"
+      >
+      </mat-paginator>
+  </mat-card-content>
 </mat-card>

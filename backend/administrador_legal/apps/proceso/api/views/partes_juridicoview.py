@@ -5,16 +5,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from rest_framework.decorators import action
 
 class ParteJViewSet(viewsets.ModelViewSet):
     queryset = Partesj.objects.all()
     serializer_class = PartesJSerializer
 
+    def confirmarParte(self, id, proceso):
+        return Partesj.objects.filter(empresa = id).filter(proceso = proceso).exists()
+
     def create(self, request, *args, **kwargs):
         instance = request.data
         user = self.request.user
         proceso = Proceso.objects.get(id = instance["proceso"])
-        if proceso.user.id == request.user.id:
+        estaRegistrado = self.confirmarParte(instance['empresa'], instance['proceso'])
+        if proceso.user.id == request.user.id and not estaRegistrado:
             serializer = PartesJSerializer(data=instance)
             serializer.is_valid(raise_exception=True)
             parte = serializer.save()
@@ -72,3 +77,10 @@ class ParteJViewSet(viewsets.ModelViewSet):
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
+    
+    @action(detail=True, methods=['get'])
+    def listar_procesos_empresa(self, request, pk = None):
+        partes = Partesj.objects.filter(empresa = pk)
+        serializer = PartesJSerializer(partes, many=True)
+        return Response(serializer.data)
+    

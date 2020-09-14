@@ -4,7 +4,23 @@
       <span class="titulo">Empresas</span>
     </mat-toolbar>
   </mat-card-title>
-<table mat-table [dataSource]="empresa" class="mat-elevation-z8">
+  <mat-card-content>
+    <mat-toolbar>
+      <form [formGroup]="nombre" (ngSubmit)="buscarNombre()" novalidate>
+        <mat-form-field >
+        <mat-label>Nombre</mat-label>
+          <input formControlName='nombre' matInput>
+        </mat-form-field>
+      </form>
+      <span class="titulo"></span>
+      <form [formGroup]="documento" (ngSubmit)="buscarDocumento()" novalidate>
+        <mat-form-field>
+        <mat-label>ID</mat-label>
+          <input formControlName='documento'  matInput>
+        </mat-form-field>
+      </form>
+    </mat-toolbar>
+  <table mat-table [dataSource]="empresa" class="mat-elevation-z8">
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -45,5 +61,5 @@
                   [pageSize]="5"
   >
   </mat-paginator>
-
+</mat-card-content>
 </mat-card>

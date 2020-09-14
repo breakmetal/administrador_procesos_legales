@@ -54,4 +54,21 @@ export class EmpresaService {
     const ruta = `${this.url}${id}/`
     return this.http.patch(ruta,info)
   }
+
+  public listarProcesos(id:number){
+    const ruta = `http://127.0.0.1:8000/api/v1.0/procesos/partes_juridico/${id}/listar_procesos_empresa/`
+    return this.http.get(ruta)
+  }
+
+  public buscarNombre(nombre:string){
+    let ruta = `http://127.0.0.1:8000/api/v1.0/abogado/empresas/?nombre=${nombre}`;
+    return this.http.get(ruta)
+  }
+
+  public buscarDocumento(documento:string){
+    let ruta = `http://127.0.0.1:8000/api/v1.0/abogado/empresas/?documento=${documento}`;
+    return this.http.get(ruta)
+  }
+
+  
 }

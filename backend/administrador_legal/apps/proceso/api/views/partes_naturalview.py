@@ -5,32 +5,28 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from rest_framework.decorators import action
 
 class ParteNViewSet(viewsets.ModelViewSet):
     queryset = Partesn.objects.all()
     serializer_class = PartesNSerializer
 
-    def confirmarParte(self, id):
-        try:
-            Partesn.objects.get(persona = id)
-            return False
-        except:
-            return True
+    def confirmarParte(self, id, proceso):
+        return Partesn.objects.filter(persona = id).filter(proceso = proceso).exists()
 
 
     def create(self, request, *args, **kwargs):
         instance = request.data
         user = self.request.user
         proceso = Proceso.objects.get(id = instance["proceso"])
-        dato = instance['persona']
-        estaRegistrado = self.confirmarParte(dato)
-        if proceso.user.id == request.user.id and estaRegistrado:
+        estaRegistrado = self.confirmarParte(instance['persona'], instance['proceso'])
+        if proceso.user.id == request.user.id and not estaRegistrado:
             serializer = PartesNSerializer(data=instance)
             serializer.is_valid(raise_exception=True)
             parte = serializer.save()
             return Response({"mensaje": "el registro fue agregado"})
         else:
-            return Response({"mensaje": "tu no tienes permiso"})
+            return Response({"mensaje": estaRegistrado})
         
     def list(self, request):
         pass
@@ -81,6 +77,12 @@ class ParteNViewSet(viewsets.ModelViewSet):
                 return Response({"mensaje":"tu no tienes permiso"})
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
+    
 
+    @action(detail=True, methods=['get'])
+    def listar_procesos_persona(self, request, pk = None):
+        partes = Partesn.objects.filter(persona= pk)
+        serializer = PartesNSerializer(partes, many=True)
+        return Response(serializer.data)
     
         

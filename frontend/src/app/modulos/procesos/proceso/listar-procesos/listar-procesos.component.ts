@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmDialogComponent } from "../../../compartidos/confirm-dialog/confirm-dialog.component";
 import { MatDialog} from '@angular/material/dialog';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { ProcesoService } from '../../servicios/proceso.service';
 import {MatPaginator} from '@angular/material/paginator';
 
@@ -32,6 +33,11 @@ export class ListarProcesosComponent implements OnInit {
   next : number;
   previous : number;
   pageIndex : number;
+  numero_proceso = new FormGroup({
+    numero_proceso : new FormControl('', [
+      Validators.pattern('^[0-9]+$')
+    ]),
+  })
   constructor(private procesoService : ProcesoService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -91,4 +97,21 @@ export class ListarProcesosComponent implements OnInit {
       }
     });
   }
+
+  buscarNumero(){
+    this.paginator.pageIndex=0
+    if (this.numero_proceso.get('numero_proceso').value != "") {
+      this.procesoService.listarProcesosId(this.numero_proceso.get('numero_proceso').value).subscribe(data =>{
+        this.proceso = data['results'];
+        this.count = data['count'];
+        this.next = data['next'];
+        this.previous = data['previous'];
+        this.pageIndex = 0;
+        console.log(data)
+      })
+    } else {
+      this.listadoInicial()
+    }
+  }
+
 }

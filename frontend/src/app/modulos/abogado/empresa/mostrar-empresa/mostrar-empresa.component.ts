@@ -26,10 +26,12 @@ export class MostrarEmpresaComponent implements OnInit {
   contactoColumnas: string[] = ['numero', 'ubicacion', 'acciones'];
   empresa: any;
   tabla: any;
+  procesos: any;
   constructor(private location: Location, private route: ActivatedRoute, private empresaService: EmpresaService) { }
 
   ngOnInit(): void {
     this.obtenerEmpresa()
+    this.obtenerProcesos()
   }
   volver(): void{
     this.location.back()
@@ -53,7 +55,13 @@ export class MostrarEmpresaComponent implements OnInit {
     arraySalida = arraySalida.filter(function(elemento){
       return elemento != undefined && elemento['campo'] != 'id'&& elemento['campo'] !='nombre' && elemento['campo'] !='apellido'
     })
-    console.log(arraySalida)
     return arraySalida;
+  }
+  
+  obtenerProcesos():void{
+    const id = +this.route.snapshot.paramMap.get('id')
+    this.empresaService.listarProcesos(id).subscribe(data => {
+      this.procesos = data
+    })
   }
 }

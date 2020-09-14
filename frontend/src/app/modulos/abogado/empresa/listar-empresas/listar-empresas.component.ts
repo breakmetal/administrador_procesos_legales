@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { ConfirmDialogComponent } from "../../../compartidos/confirm-dialog/confirm-dialog.component";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { EmpresaService } from '../../servicios/empresa.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -30,7 +31,16 @@ export class ListarEmpresasComponent implements OnInit {
   next : number;
   previous : number;
   pageIndex : number;
-
+  nombre = new FormGroup({
+    nombre : new FormControl('', [
+      Validators.pattern('^[0-9]+$')
+    ]),
+  })
+  documento = new FormGroup({
+    documento : new FormControl('', [
+      Validators.pattern('^[0-9]+$')
+    ]),
+  })
   constructor(private empresaService : EmpresaService, public dialog: MatDialog,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -104,4 +114,40 @@ export class ListarEmpresasComponent implements OnInit {
     })
   }
 
+  buscarNombre(){
+    this.documento.controls['documento'].setValue('')
+    this.paginator.pageIndex=0
+    if (this.nombre.get('nombre').value != "") {
+      this.empresaService.buscarNombre(this.nombre.get('nombre').value).subscribe(data =>{
+        this.empresa = data['results'];
+        this.count = data['count'];
+        this.next = data['next'];
+        this.previous = data['previous'];
+        this.pageIndex = 0;
+        console.log(data)
+      })
+    } else {
+      this.listadoInicial()
+      console.log('por aqui pase')
+    }
+  }
+
+  buscarDocumento(){
+    this.nombre.controls['nombre'].setValue('')
+    this.paginator.pageIndex=0
+    if (this.documento.get('documento').value != "") {
+      this.empresaService.buscarDocumento(this.documento.get('documento').value).subscribe(data =>{
+        this.empresa = data['results'];
+        this.count = data['count'];
+        this.next = data['next'];
+        this.previous = data['previous'];
+        this.pageIndex = 0;
+        console.log(data)
+      })
+    } else {
+      this.listadoInicial()
+      console.log('documento')
+    }
+  }
+  
 }

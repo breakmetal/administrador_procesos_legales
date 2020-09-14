@@ -23,6 +23,11 @@ class ProcesoViewSet(viewsets.ModelViewSet):
         
     def list(self, request):
         queryset = self.get_queryset() 
+        numero_proceso = self.request.query_params.get('numero_proceso', None)
+        if numero_proceso != None:
+            queryset = queryset.filter(numero_proceso__contains = numero_proceso)
+        else:
+            pass
         page = self.paginate_queryset(queryset)
         serializer_context = {'request': request}
         serializer = self.serializer_class(
@@ -103,6 +108,13 @@ class ProcesoViewSet(viewsets.ModelViewSet):
         queryset = self.obtener_procesos_compartidos()
         proceso= get_object_or_404(queryset, pk=pk)
         serializer = ProcesoSerializer(proceso)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def listar_procesos_personas(self, request, pk = None):
+        queryset = self.get_queryset()
+        procesos = queryset.filter(partesNaturales__persona = pk)
+        serializer = ProcesoSerializer(procesos, many=True)
         return Response(serializer.data)
 
 

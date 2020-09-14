@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from "../servicios/login.service";
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,10 +8,14 @@ import { LoginService } from "../servicios/login.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public user = {
+  /*public user = {
     username: '',
     password:''
-  };
+  };*/
+  user = new FormGroup({
+    username : new FormControl(),
+    password : new FormControl()
+  }) 
   public token:any;
 
   constructor(private loginService: LoginService) { }

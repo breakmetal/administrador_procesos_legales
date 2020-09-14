@@ -22,10 +22,12 @@ export class MostrarPersonaComponent implements OnInit {
   contactoColumnas: string[] = ['numero', 'ubicacion', 'acciones'];
   persona : any;
   tabla : any;
+  procesos : any;
   constructor(private location: Location,private route: ActivatedRoute, private personaService: PersonaService) { }
 
   ngOnInit(): void {
     this.obtenerPersona()
+    this.listar_procesos_personas()
   }
 
   obtenerPersona(): void {
@@ -56,6 +58,21 @@ export class MostrarPersonaComponent implements OnInit {
         arraySalida.push({"campo" : elemento[0], "valor" : elemento[1]})
       })*/
     return arraySalida;
+  }
+
+  obtenerProcesos():void{
+    const id = +this.route.snapshot.paramMap.get('id')
+    this.personaService.listarProcesos(id).subscribe(data => {
+      this.procesos = data
+    })
+  }
+
+  listar_procesos_personas():void{
+    const id = +this.route.snapshot.paramMap.get('id')
+    this.personaService.listar_procesos_personas(id).subscribe(data => {
+      this.procesos = data
+      console.log(data)
+    })
   }
 
 }

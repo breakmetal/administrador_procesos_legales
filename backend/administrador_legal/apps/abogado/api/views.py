@@ -7,7 +7,7 @@ from ..models import *
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import *
-from rest_framework_simplejwt.authentication import JWTAuthentication
+#from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 
@@ -51,6 +51,14 @@ class EmpresaView(viewsets.ModelViewSet):
     
     def list(self, request):
         queryset = self.get_queryset() 
+        nombre = self.request.query_params.get('nombre', None)
+        documento = self.request.query_params.get('documento', None)
+        if nombre != None:
+            queryset = queryset.filter(nombre__contains = nombre)
+        if documento != None:
+            queryset = queryset.filter(documento__contains = documento)
+        else:
+            pass
         page = self.paginate_queryset(queryset)
         serializer_context = {'request': request}
         serializer = self.serializer_class(
@@ -58,6 +66,7 @@ class EmpresaView(viewsets.ModelViewSet):
         )
         print("serializer ", serializer, "serializer.data", serializer.data )
         return self.get_paginated_response(serializer.data)
+
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -85,7 +94,7 @@ class EmpresaView(viewsets.ModelViewSet):
             else:
                 return Response('tu no tienes permiso para eliminar el registro')
         except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response("fuck")
         
         return Response('hola2')
     
@@ -96,6 +105,8 @@ class EmpresaView(viewsets.ModelViewSet):
         queryset = queryset.filter(nombre__contains = nombre)
         serializer = EmpresaSerializer(queryset, many = True)
         return  Response(serializer.data)
+  
+
 
 
 class PersonaView(viewsets.ModelViewSet):
@@ -107,6 +118,14 @@ class PersonaView(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = self.get_queryset() 
+        nombre = self.request.query_params.get('nombre', None)
+        documento = self.request.query_params.get('documento', None)
+        if nombre != None:
+            queryset = queryset.filter(Q(nombre__contains = nombre) | Q(apellido__contains = nombre))
+        if documento != None:
+            queryset = queryset.filter(documento__contains = documento)
+        else:
+            pass
         page = self.paginate_queryset(queryset)
         serializer_context = {'request': request}
         serializer = self.serializer_class(
@@ -141,7 +160,7 @@ class PersonaView(viewsets.ModelViewSet):
             else:
                 return Response('tu no tienes permiso para eliminar el proceso')
         except:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response("fuck")
         
         return Response('hola2')
 
